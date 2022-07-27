@@ -25,6 +25,7 @@
     "@fortawesome/free-solid-svg-icons": "6.1.2",
     "@ng-bootstrap/ng-bootstrap": "12.1.2",
     "angular-google-charts": "2.2.3",
+    "@brunoc/ngx-viacep": "3.3.7",
     "bootstrap": "5.2.0",
     "font-awesome": "4.7.0",
     "jquery": "3.6.0",

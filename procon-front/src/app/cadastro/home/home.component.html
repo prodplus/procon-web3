@@ -1,0 +1,39 @@
+<app-pagina [isLoading]="isLoading">
+  <app-titulo texto="Cadastros"></app-titulo>
+  <div class="text-center mb-4">
+    <app-botao-home></app-botao-home>
+  </div>
+  <div class="row col-12 mt-5">
+    <div class="col-3">
+      <div class="card">
+        <div class="card-header" style="cursor: pointer;"
+            [routerLink]="['/cadastros/consumidores']">
+          <div class="card-title">Consumidores</div>
+        </div>
+        <div class="card-body">
+          <div>
+            <a href="#" [routerLink]="['/cadastros/consumidores']" class="me-lg-5">
+              Listar
+            </a>
+            <a href="#" [routerLink]="['/cadastros/consumidores/novo']">Novo</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-3">
+      <div class="card">
+        <div class="card-header" style="cursor: pointer;" [routerLink]="['/cadastros/usuarios']">
+          <div class="card-title">Usuários</div>
+        </div>
+        <div class="card-body">
+          <div>
+            <a href="#" [routerLink]="['/cadastros/usuarios']" class="me-lg-5">
+              Listar
+            </a>
+            <a href="#" [routerLink]="['/cadastros/usuarios/novo']">Novo</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-pagina>

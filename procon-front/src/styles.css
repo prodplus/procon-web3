@@ -1,1 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
+
+body {
+  background-image: url('src/assets/img/fundo.jpg');
+}
+
+.th-botao {
+  width: 45px;
+}
+
+.maiusculas {
+  text-transform: uppercase;
+}
+
+.btn-sm {
+  height: 31px;
+}
+
+.btn-control {
+  width: 65px;
+}
+
+.btn-inside {
+  margin-top: 32px;
+}

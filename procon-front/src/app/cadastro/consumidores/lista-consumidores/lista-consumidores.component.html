@@ -1,0 +1,38 @@
+<app-pagina [isLoading]="isLoading">
+  <app-titulo texto="Consumidores"></app-titulo>
+  <app-controle [rota]="['novo']" mensagem="cadastrar novo consumidor">
+  </app-controle>
+  <div class="col-5">
+    <app-search-input [form]="form" label="Nome / CPF / CNPJ">
+    </app-search-input>
+  </div>
+
+  <app-tabela [tamanhoPagina]="consumidores.size" [tamanhoTotal]="consumidores.totalElements"
+      [pagina]="pagina" (mudaPagina)="mudaPagina($event)">
+    <caption *ngIf="consumidores.totalElements == 0">
+      nenhum consumidor cadastrado...
+    </caption>
+    <caption *ngIf="consumidores.totalElements > 0">
+      consumidores cadastrados: {{ consumidores.totalElements }}
+    </caption>
+    <thead class="bg-dark text-white">
+      <th class="text-center">Denominação</th>
+      <th class="text-center">CPF / CNPJ</th>
+      <th class="text-center th-botao">exc</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let cons of consumidores.content" style="cursor: pointer;"
+          [routerLink]="['/cadastros/consumidores/novo', cons.id]">
+        <td class="align-middle">{{ cons.denominacao }}</td>
+        <td class="text-center align-middle">
+          {{ cons.cadastro | mask: getMascaraCadastro(cons) }}
+        </td>
+        <td class="text-center align-middle">
+          <app-botao-excluir-tab [id]="cons.id" (clique)="chamaModal($event)">
+          </app-botao-excluir-tab>
+        </td>
+      </tr>
+    </tbody>
+  </app-tabela>
+</app-pagina>
+<app-modal #modal></app-modal>

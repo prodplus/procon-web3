@@ -1,0 +1,36 @@
+<form [formGroup]="form">
+  <div class="row col-12 mb-3">
+    <div class="col-3">
+      <label for="inputFone" class="form-label">Fone:</label>
+      <input type="text" [mask]="mascaraFoneInput()" id="inputFone"
+          class="form-control" formControlName="fone" style="text-align: center;">
+    </div>
+    <div class="col-2">
+      <button class="btn btn-primary btn-inside" type="button" (click)="adicionaFone()"
+          [disabled]="form.invalid">
+        <fa-icon [icon]="iPlus"></fa-icon>
+      </button>
+    </div>
+    <div class="col-6">
+      <table class="table table-sm table-bordered table-striped table-hover">
+        <thead class="bg-primary text-white">
+          <th class="text-center">Fone</th>
+          <th class="text-center th-botao">rem</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let fone of fones; index as i;">
+            <td class="text-center align-middle">
+              {{ fone | mask: mascaraFone(fone) }}
+            </td>
+            <td class="text-center align-middle">
+              <button class="btn btn-danger btn-sm" title="remover fone"
+                  type="button" (click)="removeFone(i)">
+                <fa-icon [icon]="iMinus"></fa-icon>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,9 @@
+<form [formGroup]="form">
+  <div class="input-group mb-4">
+    <span class="input-group-text" id="searchIcon">
+      <fa-icon [icon]="icon"></fa-icon>
+    </span>
+    <input type="text" class="form-control" [placeholder]="label"
+        aria-label="buscar" aria-describedby="searchIcon" formControlName="input">
+  </div>
+</form>

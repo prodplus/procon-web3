@@ -1,0 +1,5 @@
+<button class="btn btn-control btn-dark" title="exibir ativos/inativos"
+    (click)="onClick()">
+  <fa-icon [icon]="iToggleOn" *ngIf="ativos"></fa-icon>
+  <fa-icon [icon]="iToggleOff" *ngIf="!ativos"></fa-icon>
+</button>

@@ -1,4 +1,4 @@
-package br.com.procon.services.controller;
+package br.com.procon.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

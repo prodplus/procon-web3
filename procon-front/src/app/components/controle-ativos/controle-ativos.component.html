@@ -1,0 +1,12 @@
+<div class="text-center mb-4">
+  <app-botao-home class="me-1"></app-botao-home>
+  <app-botao-novo class="me-1" [rota]="rota" [mensagem]="mensagemNovo">
+  </app-botao-novo>
+  <app-botao-ativar class="me-1" [ativos]="ativos" (clique)="onClick()">
+  </app-botao-ativar>
+</div>
+
+<h4 class="text-center text-secondary mb-4">
+  <div *ngIf="ativos">ATIVOS</div>
+  <div *ngIf="!ativos">INATIVOS</div>
+</h4>

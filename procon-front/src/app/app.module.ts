@@ -6,13 +6,19 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxMaskModule } from 'ngx-mask';
 import { GoogleChartsModule } from 'angular-google-charts';
+import { NgxViacepModule } from '@brunoc/ngx-viacep';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { HomeComponent } from './home/home.component';
+import { ComponentsModule } from './components/components.module';
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HomeComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
@@ -23,7 +29,9 @@ import { AppComponent } from './app.component';
     ReactiveFormsModule,
     NgbModule,
     NgxMaskModule.forRoot(),
-    GoogleChartsModule
+    GoogleChartsModule,
+    ComponentsModule,
+    NgxViacepModule
   ],
   providers: [],
   bootstrap: [AppComponent]

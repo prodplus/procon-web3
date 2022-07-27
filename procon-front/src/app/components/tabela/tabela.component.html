@@ -1,0 +1,9 @@
+<app-paginador [tamanhoTotal]="tamanhoTotal" [tamanhoPagina]="tamanhoPagina"
+    [pagina]="pagina" (mudaPagina)="alteraPagina($event)">
+</app-paginador>
+<table class="table table-sm table-hover table-striped table-bordered caption-top">
+  <ng-content></ng-content>
+</table>
+<app-paginador [tamanhoTotal]="tamanhoTotal" [tamanhoPagina]="tamanhoPagina"
+    [pagina]="pagina" (mudaPagina)="alteraPagina($event)">
+</app-paginador>

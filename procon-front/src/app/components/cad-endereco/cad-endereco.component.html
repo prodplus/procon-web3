@@ -1,0 +1,79 @@
+<form [formGroup]="form">
+  <div class="row col-12 mb-3">
+    <div class="col-2">
+      <label for="inputCep" class="form-label">CEP:</label>
+      <input type="text" id="inputCep" [ngClass]="getInputClass('cep')"
+          formControlName="cep" style="text-align: right;" mask="00000-000">
+      <div class="invalid-feedback">
+        campo obrigatório!
+      </div>
+    </div>
+    <div class="col-2">
+      <button class="btn btn-primary btn-inside me-1" type="button"
+          (click)="buscarEnderecoPorCep()" title="busca endereço"
+          [disabled]="form.get('cep')?.value.length < 8">
+        <fa-icon [icon]="iSearch"></fa-icon>
+      </button>
+      <button class="btn btn-info btn-inside" type="button"
+          (click)="buscarCepPorEndereco()" title="buscar cep"
+          [disabled]="getBuscaCepDisable()">
+        <fa-icon [icon]="iSearch"></fa-icon>
+      </button>
+    </div>
+  </div>
+  <div class="row col-12 mb-3">
+    <div class="col-6">
+      <label for="inputLogradouro" class="form-label">Logradouro:</label>
+      <input type="text" id="inputLogradouro" [ngClass]="getInputClass('logradouro')"
+          formControlName="logradouro">
+      <div class="invalid-feedback">
+        campo obrigatório!
+      </div>
+    </div>
+    <div class="col-2">
+      <label for="inputNro" class="form-label">Nro:</label>
+      <input type="text" id="inputNro" [ngClass]="getInputClass('numero')"
+          formControlName="numero" maxlength="20">
+      <div class="invalid-feedback">
+        campo obrigatório!
+      </div>
+    </div>
+    <div class="col-2">
+      <label for="inputComplemento" class="form-label">Complemento:</label>
+      <input type="text" id="inputComplemento" [ngClass]="getInputClass('complemento')"
+          formControlName="complemento" maxlength="50">
+      <div class="invalid-feedback">
+        campo obrigatório!
+      </div>
+    </div>
+  </div>
+  <div class="col-5 mb-3">
+    <label for="inputBairro" class="form-label">Bairro:</label>
+    <input type="text" id="inputBairro" [ngClass]="getInputClass('bairro')"
+        formControlName="bairro">
+    <div class="invalid-feedback">
+      campo obrigatório!
+    </div>
+  </div>
+  <div class="row col-12 mb-3">
+    <div class="col-5">
+      <label for="inputMunicipio" class="form-label">Município:</label>
+      <input type="text" id="inputMunicipio" [ngClass]="getInputClass('municipio')"
+          formControlName="municipio">
+      <div class="invalid-feedback">
+        campo obrigatório!
+      </div>
+    </div>
+    <div class="col-2">
+      <label for="inputUf" class="form-label">UF:</label>
+      <select id="inputUf" [ngClass]="getSelectClass('uf')" formControlName="uf"
+          style="text-align: center;">
+        <option [ngValue]="null" disabled>...</option>
+        <option *ngFor="let uf of ufs" [value]="uf">{{ uf }}</option>
+      </select>
+      <div class="invalid-feedback">
+        *
+      </div>
+    </div>
+  </div>
+</form>
