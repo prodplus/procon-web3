@@ -9,12 +9,16 @@ import { ComponentsModule } from '../components/components.module';
 import { HomeComponent } from './home/home.component';
 import { ListaConsumidoresComponent } from './consumidores/lista-consumidores/lista-consumidores.component';
 import { CadConsumidoresComponent } from './consumidores/cad-consumidores/cad-consumidores.component';
+import { ListaFornecedoresComponent } from './fornecedores/lista-fornecedores/lista-fornecedores.component';
+import { CadFornecedoresComponent } from './fornecedores/cad-fornecedores/cad-fornecedores.component';
 
 @NgModule({
   declarations: [
     HomeComponent,
     ListaConsumidoresComponent,
-    CadConsumidoresComponent
+    CadConsumidoresComponent,
+    ListaFornecedoresComponent,
+    CadFornecedoresComponent
   ],
   imports: [
     CommonModule,

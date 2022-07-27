@@ -1,0 +1,41 @@
+<app-pagina [isLoading]="isLoading">
+  <app-titulo texto="Fornecedores"></app-titulo>
+  <app-controle [rota]="['novo']" mensagem="cadastrar novo fornecedor">
+  </app-controle>
+  <div class="col-5">
+    <app-search-input [form]="form" label="Denominação / CNPJ">
+    </app-search-input>
+  </div>
+
+  <app-tabela [tamanhoPagina]="fornecedores.size" [tamanhoTotal]="fornecedores.totalElements"
+      [pagina]="pagina" (mudaPagina)="mudaPagina($event)">
+    <caption *ngIf="fornecedores.totalElements == 0">
+      nenhum fornecedor cadastrado...
+    </caption>
+    <caption *ngIf="fornecedores.totalElements > 0">
+      consumidores cadastrados: {{ fornecedores.totalElements }}
+    </caption>
+    <thead class="bg-dark text-white">
+      <th class="text-center">Fantasia</th>
+      <th class="text-center">CNPJ</th>
+      <th class="text-center th-botao">exc</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let forn of fornecedores.content">
+        <td class="align-middle" style="cursor: pointer;"
+            [routerLink]="['/cadastros/fornecedores/novo', forn.id]">
+          {{ forn.fantasia }}
+        </td>
+        <td class="text-end align-middle" style="cursor: pointer;"
+            [routerLink]="['/cadastros/fornecedores/novo', forn.id]">
+          {{ forn.cnpj | mask: '00.000.000/0000-00' }}
+        </td>
+        <td class="text-center align-middle">
+          <app-botao-excluir-tab [id]="forn.id" (clique)="chamaModal($event)">
+          </app-botao-excluir-tab>
+        </td>
+      </tr>
+    </tbody>
+  </app-tabela>
+</app-pagina>
+<app-modal #modal (sim)="concordou($event)"></app-modal>

@@ -1,22 +1,21 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { debounceTime } from 'rxjs';
-
 import { ModalComponent } from 'src/app/components/modal/modal.component';
 import { Page } from 'src/app/models/auxiliares/page';
 import { RespModal } from 'src/app/models/auxiliares/resp-modal';
-import { ConsumidorDto } from 'src/app/models/dtos/consumidor-dto';
-import { ConsumidorService } from 'src/app/services/consumidor.service';
+import { FornecedorDto } from 'src/app/models/dtos/fornecedor-dto';
+import { FornecedorService } from 'src/app/services/fornecedor.service';
 
 @Component({
-  selector: 'app-lista-consumidores',
-  templateUrl: './lista-consumidores.component.html',
-  styleUrls: ['./lista-consumidores.component.css']
+  selector: 'app-lista-fornecedores',
+  templateUrl: './lista-fornecedores.component.html',
+  styleUrls: ['./lista-fornecedores.component.css']
 })
-export class ListaConsumidoresComponent implements OnInit, AfterViewInit {
+export class ListaFornecedoresComponent implements OnInit, AfterViewInit {
   isLoading = false;
-  consumidores: Page<ConsumidorDto> = new Page();
-  idConsumidor: number | null = null;
+  fornecedores: Page<FornecedorDto> = new Page();
+  idFornecedor: number | null = null;
   searchValue: string | null = null;
   form!: FormGroup;
   pagina = 1;
@@ -24,7 +23,7 @@ export class ListaConsumidoresComponent implements OnInit, AfterViewInit {
   modal!: ModalComponent;
 
   constructor(
-    private consumidorService: ConsumidorService,
+    private fornecedorService: FornecedorService,
     private builder: FormBuilder
   ) { }
 
@@ -49,17 +48,8 @@ export class ListaConsumidoresComponent implements OnInit, AfterViewInit {
 
   private recarregar(pagina: number, value: string | null) {
     if (value == null) {
-      this.consumidorService.listar(pagina - 1, 20).subscribe({
-        next: (p) => (this.consumidores = p),
-        error: (err) => {
-          this.isLoading = false;
-          this.modal.openErro(err);
-        },
-        complete: () => (this.isLoading = false),
-      });
-    } else {
-      this.consumidorService.listarParametro(pagina - 1, 20, value).subscribe({
-        next: (p) => (this.consumidores = p),
+      this.fornecedorService.listar(pagina - 1, 20).subscribe({
+        next: (p) => (this.fornecedores = p),
         error: (err) => {
           this.isLoading = false;
           this.modal.openErro(err);
@@ -75,14 +65,14 @@ export class ListaConsumidoresComponent implements OnInit, AfterViewInit {
   }
 
   chamaModal(resp: { id: number | null; tipo: string }) {
-    this.idConsumidor = resp.id;
+    this.idFornecedor = resp.id;
     this.modal.open('warning', 'Atenção!!',
-      'Tem certeza que deseja EXCLUIR o consumidor??', 'e', true);
+      'Tem certeza que deseja EXCLUIR o fornecedor??', 'e', true);
   }
 
   private excluir(id: number) {
     this.isLoading = true;
-    this.consumidorService.excluir(id).subscribe({
+    this.fornecedorService.excluir(id).subscribe({
       error: (err) => {
         this.isLoading = false;
         this.modal.openErro(err);
@@ -91,19 +81,14 @@ export class ListaConsumidoresComponent implements OnInit, AfterViewInit {
         this.pagina = 1;
         this.searchValue = null;
         this.recarregar(this.pagina, this.searchValue);
-        this.modal.open('success', 'Pronto!', 'Consumidor excluído!', 'e', false);
+        this.modal.open('success', 'Pronto!', 'Fornecedor excluído!', 'e', false);
       }
     });
   }
 
   concordou(resp: RespModal) {
-    if (resp.confirmou && this.idConsumidor != null)
-      this.excluir(this.idConsumidor);
+    if (resp.confirmou && this.idFornecedor != null)
+      this.excluir(this.idFornecedor);
   }
 
-  getMascaraCadastro(cons: ConsumidorDto): string {
-    if (cons.tipo === 'FISICA')
-      return '000.000.000-00';
-    else return '00.000.000/0000-00';
-  }
 }

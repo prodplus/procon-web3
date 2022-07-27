@@ -21,10 +21,13 @@
       <th class="text-center th-botao">exc</th>
     </thead>
     <tbody>
-      <tr *ngFor="let cons of consumidores.content" style="cursor: pointer;"
-          [routerLink]="['/cadastros/consumidores/novo', cons.id]">
-        <td class="align-middle">{{ cons.denominacao }}</td>
-        <td class="text-center align-middle">
+      <tr *ngFor="let cons of consumidores.content">
+        <td class="align-middle" style="cursor: pointer;"
+            [routerLink]="['/cadastros/consumidores/novo', cons.id]">
+          {{ cons.denominacao }}
+        </td>
+        <td class="text-center align-middle" style="cursor: pointer;"
+            [routerLink]="['/cadastros/consumidores/novo', cons.id]">
           {{ cons.cadastro | mask: getMascaraCadastro(cons) }}
         </td>
         <td class="text-center align-middle">
@@ -35,4 +38,4 @@
     </tbody>
   </app-tabela>
 </app-pagina>
-<app-modal #modal></app-modal>
+<app-modal #modal (sim)="concordou($event)"></app-modal>

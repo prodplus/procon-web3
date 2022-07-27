@@ -1,0 +1,45 @@
+<app-pagina [isLoading]="isLoading">
+  <app-titulo texto="Cadastro de Fornecedores"></app-titulo>
+  <div class="text-center mb-4">
+    <app-botao-cancelar (clique)="cancelar()"></app-botao-cancelar>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="salvar()">
+    <div class="col-8 mb-3">
+      <label for="inputFantasia" class="form-label">Fantasia:</label>
+      <input type="text" [ngClass]="getInputUpperClass('fantasia')" id="inputFantasia"
+          formControlName="fantasia">
+      <div class="invalid-feedback">
+        campo obrigatório!
+      </div>
+    </div>
+    <div class="col-8 mb-3">
+      <label for="inputRazao" class="form-label">Razão Social:</label>
+      <input type="text" class="form-control maiusculas" id="inputRazao"
+          formControlName="razaoSocial">
+    </div>
+    <div class="col-3 mb-3">
+      <label for="inputCnpj" class="form-label">CNPJ:</label>
+      <input type="text" class="form-control" [mask]="'00.000.000/0000-00'"
+          formControlName="cnpj" style="text-align: right;">
+    </div>
+    <div class="col-5 mb-3">
+      <label for="inputEmail" class="form-label">Email:</label>
+      <input type="email" class="form-control" [ngClass]="getInputClass('email')"
+          formControlName="email">
+      <div class="invalid-feedback">
+        email inválido!
+      </div>
+    </div>
+    <app-cad-fone [fones]="fones"></app-cad-fone>
+    <app-cad-endereco [form]="form">
+    </app-cad-endereco>
+    <div class="gap-1 d-grid">
+      <button class="btn btn-success btn-lg" type="submit"
+          [disabled]="form.invalid">
+        salvar
+      </button>
+    </div>
+  </form>
+</app-pagina>
+<app-modal #modal></app-modal>
