@@ -13,12 +13,14 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { ComponentsModule } from './components/components.module';
 import { HeaderComponent } from './header/header.component';
+import { ConfiguracoesComponent } from './configuracoes/configuracoes.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    HeaderComponent
+    HeaderComponent,
+    ConfiguracoesComponent
   ],
   imports: [
     BrowserModule,

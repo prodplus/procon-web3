@@ -1,0 +1,42 @@
+<app-pagina [isLoading]="isLoading">
+  <app-titulo texto="Configurações do Sistema"></app-titulo>
+  <div class="text-center mb-4">
+    <app-botao-cancelar (clique)="cancelar()"></app-botao-cancelar>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="salvar()">
+    <div class="col-6 mb-3">
+      <label for="inputDescricao" class="form-label">Descrição Procon:</label>
+      <input type="text" id="inputDescricao" class="form-control maiusculas" #input
+          autofocus formControlName="descricao">
+    </div>
+    <div class="col-6 mb-3">
+      <label for="inputNome" class="form-label">Nome Procon:</label>
+      <input type="text" id="inputNome" class="form-control maiusculas"
+          formControlName="nome">
+    </div>
+    <div class="col-6 mb-3">
+      <label for="inputDiretoria" class="form-label">Diretoria:</label>
+      <input type="text" id="inputDiretoria" class="form-control"
+          formControlName="diretoria">
+    </div>
+    <div class="col-12 mb-3">
+      <label for="inputEndereco" class="form-label">Endereço:</label>
+      <input type="text" id="inputEndereco" class="form-control"
+          formControlName="endereco">
+    </div>
+    <div class="col-6 mb-3">
+      <label for="inputEmail" class="form-label">Email:</label>
+      <input type="email" id="inputEmail" class="form-control"
+          formControlName="email">
+    </div>
+    <app-cad-fone [fones]="configuracao.fones"></app-cad-fone>
+    <div class="d-grid gap-1">
+      <button class="btn btn-lg btn-success" type="submit"
+          [disabled]="form.invalid">
+        salvar
+      </button>
+    </div>
+  </form>
+</app-pagina>
+<app-modal #modal></app-modal>
