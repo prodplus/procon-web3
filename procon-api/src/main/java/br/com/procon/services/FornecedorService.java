@@ -137,6 +137,26 @@ public class FornecedorService {
 		}
 	}
 
+	public boolean fornecedorExiste(String fantasia) {
+		try {
+			return this.fornecedorRepository.existsByFantasia(fantasia);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+					"ocorreu um erro no servidor!", e.getCause());
+		}
+	}
+
+	public boolean cnpjExiste(String cnpj) {
+		try {
+			return this.fornecedorRepository.existsByCnpj(cnpj);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+					"ocorreu um erro no servidor!", e.getCause());
+		}
+	}
+
 	private static Page<FornecedorDto> transformaDto(List<FornecedorDto> lista,
 			Page<Fornecedor> page, Pageable pageable) {
 		page.getContent().forEach(f -> lista.add(

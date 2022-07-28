@@ -38,4 +38,8 @@ export class ConsumidorService {
   excluir(id: number) {
     return this.http.delete(`${URL}/${id}`);
   }
+
+  consumidorExiste(cadastro: string): Observable<boolean> {
+    return this.http.get<boolean>(`${URL}/existe/${cadastro}`);
+  }
 }

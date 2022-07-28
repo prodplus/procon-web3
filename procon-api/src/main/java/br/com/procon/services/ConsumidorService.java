@@ -137,6 +137,16 @@ public class ConsumidorService {
 		}
 	}
 
+	public boolean consumidorExiste(String cadastro) {
+		try {
+			return this.consumidorRepository.existsByCadastro(cadastro);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+					"ocorreu um erro no servidor!", e.getCause());
+		}
+	}
+
 	private static Page<ConsumidorDto> transformaDto(List<ConsumidorDto> lista,
 			Page<Consumidor> page, Pageable pageable) {
 		page.getContent().forEach(c -> lista.add(new ConsumidorDto(c.getId(), c.getTipo().name(),

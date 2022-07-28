@@ -19,4 +19,6 @@ public interface ConsumidorRepository extends JpaRepository<Consumidor, Integer>
 
 	Page<Consumidor> findAllByDenominacaoContaining(String parametro, Pageable pageable);
 
+	boolean existsByCadastro(String cadastro);
+
 }

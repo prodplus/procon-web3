@@ -8,9 +8,12 @@
     <div class="col-8 mb-3">
       <label for="inputFantasia" class="form-label">Fantasia:</label>
       <input type="text" [ngClass]="getInputUpperClass('fantasia')" id="inputFantasia"
-          formControlName="fantasia">
-      <div class="invalid-feedback">
+          formControlName="fantasia" #input>
+      <div class="invalid-feedback" *ngIf="form.get('fantasia')?.hasError('required')">
         campo obrigatório!
+      </div>
+      <div class="invalid-feedback" *ngIf="form.get('fantasia')?.hasError('fornExiste')">
+        fornecedor já cadastrado!
       </div>
     </div>
     <div class="col-8 mb-3">
@@ -20,8 +23,11 @@
     </div>
     <div class="col-3 mb-3">
       <label for="inputCnpj" class="form-label">CNPJ:</label>
-      <input type="text" class="form-control" [mask]="'00.000.000/0000-00'"
-          formControlName="cnpj" style="text-align: right;">
+      <input type="text" [ngClass]="getInputClass('cnpj')" [mask]="'00.000.000/0000-00'"
+          formControlName="cnpj" style="text-align: right;" id="inputCnpj">
+      <div class="invalid-feedback" *ngIf="form.get('cnpj')?.hasError('fornExiste')">
+        fornecedor já cadastrado!
+      </div>
     </div>
     <div class="col-5 mb-3">
       <label for="inputEmail" class="form-label">Email:</label>

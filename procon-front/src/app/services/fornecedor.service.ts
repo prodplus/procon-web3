@@ -37,4 +37,12 @@ export class FornecedorService {
   excluir(id: number) {
     return this.http.delete(`${URL}/${id}`);
   }
+
+  fornecedorExiste(fantasia: string): Observable<boolean> {
+    return this.http.get<boolean>(`${URL}/existe/${fantasia}`);
+  }
+
+  cnpjExiste(cnpj: string): Observable<boolean> {
+    return this.http.get<boolean>(`${URL}/cnpj/${cnpj}`);
+  }
 }

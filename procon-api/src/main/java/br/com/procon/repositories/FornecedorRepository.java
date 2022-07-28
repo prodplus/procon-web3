@@ -20,4 +20,8 @@ public interface FornecedorRepository extends JpaRepository<Fornecedor, Integer>
 	Page<Fornecedor> findAllByFantasiaContainingIgnoreCaseOrRazaoSocialContainingIgnoreCase(
 			String parametro, String parametro2, Pageable pageable);
 
+	boolean existsByFantasia(String fantasia);
+
+	boolean existsByCnpj(String cnpj);
+
 }

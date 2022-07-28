@@ -28,6 +28,10 @@ import { CadFornecedoresComponent } from './fornecedores/cad-fornecedores/cad-fo
     ReactiveFormsModule,
     NgxMaskModule,
     FontAwesomeModule,
+  ],
+  exports: [
+    CadConsumidoresComponent,
+    CadFornecedoresComponent
   ]
 })
 export class CadastroModule { }

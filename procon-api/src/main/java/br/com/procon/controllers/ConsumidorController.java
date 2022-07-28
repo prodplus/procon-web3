@@ -64,4 +64,9 @@ public class ConsumidorController {
 		return ResponseEntity.ok().build();
 	}
 
+	@GetMapping("/existe/{cadastro}")
+	public ResponseEntity<Boolean> consumidorExiste(@PathVariable String cadastro) {
+		return ResponseEntity.ok(this.consumidorService.consumidorExiste(cadastro));
+	}
+
 }

@@ -64,4 +64,14 @@ public class FornecedorController {
 		return ResponseEntity.ok().build();
 	}
 
+	@GetMapping("/existe/{fantasia}")
+	public ResponseEntity<Boolean> fornecedorExiste(@PathVariable String fantasia) {
+		return ResponseEntity.ok(this.fornecedorService.fornecedorExiste(fantasia));
+	}
+
+	@GetMapping("/cnpj/{cnpj}")
+	public ResponseEntity<Boolean> cnpjExiste(@PathVariable String cnpj) {
+		return ResponseEntity.ok(this.fornecedorService.cnpjExiste(cnpj));
+	}
+
 }

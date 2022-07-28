@@ -2,6 +2,7 @@ import { Location } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { debounceTime } from 'rxjs';
 
 import { ModalComponent } from 'src/app/components/modal/modal.component';
 import { Endereco } from 'src/app/models/auxiliares/endereco';
@@ -45,7 +46,7 @@ export class CadConsumidoresComponent implements OnInit, AfterViewInit {
     this.form = this.builder.group({
       tipo: ['FISICA', [Validators.required]],
       denominacao: ['', [Validators.required]],
-      cadastro: ['', [Validators.required]],
+      cadastro: ['', [Validators.required, Validators.minLength(11)]],
       nascimento: [''],
       email: ['', [Validators.email]],
       cep: ['', [Validators.required]],
@@ -80,6 +81,35 @@ export class CadConsumidoresComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.input.nativeElement.focus();
     }, 100);
+
+    this.form.get('cadastro')?.valueChanges.pipe(debounceTime(300)).subscribe(
+      (value) => {
+        if (this.idExterno == null && this.idInterno == null) {
+          let b = false;
+          if (
+              (this.form.get("tipo")?.value === 'FISICA' && value.length == 11) ||
+              (this.form.get("tipo")?.value === 'JURIDICA' && value.length == 14)) {
+            this.consumidorService.consumidorExiste(value).subscribe({
+              next: (v) => (b = v),
+              error: (err) => (this.modal.openErro(err)),
+              complete: () => {
+                if (b) this.form.get('cadastro')?.setErrors({ consExiste: true });
+                else this.form.get('cadastro')?.setErrors(null);
+              }
+            });
+          }
+        }
+      }
+    );
+
+    this.form.get('tipo')?.valueChanges.subscribe((value) => {
+      if (value === 'FISICA')
+        this.form.get('cadastro')?.setValidators([Validators.required,
+          Validators.minLength(11)]);
+      else
+        this.form.get('cadastro')?.setValidators([Validators.required,
+          Validators.minLength(14)]);
+    })
   }
 
   private carregaFormulario(cons: Consumidor) {

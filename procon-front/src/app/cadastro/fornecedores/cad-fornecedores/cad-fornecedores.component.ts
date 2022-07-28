@@ -2,6 +2,7 @@ import { Location } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { debounceTime } from 'rxjs';
 import { ModalComponent } from 'src/app/components/modal/modal.component';
 import { Endereco } from 'src/app/models/auxiliares/endereco';
 import { Fornecedor } from 'src/app/models/fornecedor';
@@ -38,16 +39,16 @@ export class CadFornecedoresComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.form = this.builder.group({
       fantasia: ['', [Validators.required]],
-      razaoSocial: [null],
-      cnpj: [null],
-      email: [null, [Validators.email]],
-      cep: [null],
-      logradouro: [null],
-      numero: [null],
-      complemento: [null],
-      bairro: [null],
-      municipio: [null],
-      uf: [null],
+      razaoSocial: [''],
+      cnpj: [''],
+      email: ['', [Validators.email]],
+      cep: [''],
+      logradouro: [''],
+      numero: [''],
+      complemento: [''],
+      bairro: [''],
+      municipio: [''],
+      uf: [''],
     });
 
     this.route.paramMap.subscribe((values) => {
@@ -73,6 +74,34 @@ export class CadFornecedoresComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.input.nativeElement.focus();
     }, 100);
+
+    this.form.get('fantasia')?.valueChanges.pipe(debounceTime(300)).subscribe(
+      (value) => {
+        if (this.idExterno == null && this.idInterno == null) {
+          let b = false;
+          this.fornecedorService.fornecedorExiste(value).subscribe({
+            next: (v) => (b = v),
+            complete: () => {
+              if (b)
+                this.form.get('fantasia')?.setErrors({ fornExiste: true });
+              else
+                this.form.get('fantasia')?.setErrors(null);
+            }
+          });
+        }
+      }
+    );
+
+    this.form.get('cnpj')?.valueChanges.subscribe((value) => {
+      if (value.length >= 14) {
+        this.fornecedorService.cnpjExiste(value).subscribe(
+          (v) => {
+            if (v) this.form.get('cnpj')?.setErrors({ fornExiste: true });
+            else this.form.get('cnpj')?.setErrors(null);
+          }
+        );
+      }
+    });
   }
 
   private carregaFormulario(forn: Fornecedor) {

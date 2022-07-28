@@ -26,6 +26,9 @@
       </label>
       <input type="text" [ngClass]="getInputUpperClass('denominacao')"
           formControlName="denominacao">
+      <div class="invalid-feedback">
+        obrigatório!
+      </div>
     </div>
     <div class="row col-12 mb-3">
       <div class="col-3">
@@ -40,6 +43,10 @@
         <input type="text" id="inputCadastro" [ngClass]="getInputClass('cadastro')"
             [mask]="getMascara()" style="text-align: end;"
             formControlName="cadastro">
+        <div class="invalid-feedback"
+            *ngIf="form.get('cadastro')?.hasError('consExiste')">
+          consumidor já cadastrado!
+        </div>
       </div>
       <div class="col-3" *ngIf="form.get('tipo')?.value === 'FISICA'">
         <label for="inputNascimento" class="form-label">Nascimento:</label>
