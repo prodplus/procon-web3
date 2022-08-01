@@ -1,3 +1,6 @@
-<app-pagina [isLoading]="isLoading">
+<app-pagina [isLoading]="isLoading" *ngIf="(user$ |async); else login;">
   <app-titulo texto="PROCON-WEB 3.0"></app-titulo>
 </app-pagina>
+<ng-template #login>
+  <app-login></app-login>
+</ng-template>

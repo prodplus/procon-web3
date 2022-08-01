@@ -14,13 +14,16 @@ import { HomeComponent } from './home/home.component';
 import { ComponentsModule } from './components/components.module';
 import { HeaderComponent } from './header/header.component';
 import { ConfiguracoesComponent } from './configuracoes/configuracoes.component';
+import { LoginComponent } from './login/login.component';
+import { CoreModule } from './core/core.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     HeaderComponent,
-    ConfiguracoesComponent
+    ConfiguracoesComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -33,7 +36,8 @@ import { ConfiguracoesComponent } from './configuracoes/configuracoes.component'
     NgxMaskModule.forRoot(),
     GoogleChartsModule,
     ComponentsModule,
-    NgxViacepModule
+    NgxViacepModule,
+    CoreModule
   ],
   providers: [],
   bootstrap: [AppComponent]

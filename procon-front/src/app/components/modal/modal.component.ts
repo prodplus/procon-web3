@@ -37,6 +37,7 @@ export class ModalComponent implements OnInit {
   }
 
   openErro(err: HttpErrorResponse) {
+    console.log(err);
     this.mensagem = new Mensagem('modal-title text-danger', 'Erro!!', err.error.message);
     this.modalService.open(this.modal);
   }

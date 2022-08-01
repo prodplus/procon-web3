@@ -1,0 +1,28 @@
+<app-pagina [isLoading]="isLoading">
+  <app-titulo texto="SISTEMA DE GERENCIAMENTO DE PROCESSOS PROCON"></app-titulo>
+  <div class="card align-middle bg-dark border border-success rounded card-login">
+    <div class="card-header">
+      <h3 class="text-center text-success">
+        <strong>LOGIN</strong>
+      </h3>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="form" (ngSubmit)="login()">
+        <div class="mb-4">
+          <input type="text" #input formControlName="email" class="form-control"
+              placeholder="usuário" autofocus autocomplete="off">
+        </div>
+        <div class="mb-4">
+          <input type="password" formControlName="password" class="form-control"
+              placeholder="senha" autocomplete="off">
+        </div>
+        <div class="d-grid gap-1">
+          <button class="btn btn-lg btn-success" type="submit" [disabled]="form.invalid">
+            entrar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</app-pagina>
+<app-modal #modal></app-modal>
