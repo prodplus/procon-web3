@@ -1,5 +1,6 @@
 package br.com.procon.services;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +21,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import br.com.procon.models.Fornecedor;
 import br.com.procon.models.dtos.FornecedorDto;
+import br.com.procon.models.enums.TipoLog;
 import br.com.procon.repositories.FornecedorRepository;
 
 /**
@@ -31,11 +33,16 @@ import br.com.procon.repositories.FornecedorRepository;
 public class FornecedorService {
 
 	@Autowired
-	public FornecedorRepository fornecedorRepository;
+	private FornecedorRepository fornecedorRepository;
+	@Autowired
+	private LogService logService;
 
 	public Fornecedor salvar(@Valid Fornecedor fornecedor) {
 		try {
-			return this.fornecedorRepository.save(fornecedor);
+			Fornecedor forn = this.fornecedorRepository.save(fornecedor);
+			this.logService.salvar(LocalDateTime.now(), "Fornecedor " + forn.getFantasia(),
+					TipoLog.INSERCAO);
+			return forn;
 		} catch (ValidationException e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "erro de validação!",
 					e.getCause());
@@ -58,6 +65,8 @@ public class FornecedorService {
 				f.setFantasia(fornecedor.getFantasia());
 				f.setFones(fornecedor.getFones());
 				f.setRazaoSocial(fornecedor.getRazaoSocial());
+				this.logService.salvar(LocalDateTime.now(), "Fornecedor " + f.getFantasia(),
+						TipoLog.ATUALIZACAO);
 				return this.fornecedorRepository.save(f);
 			}).orElseThrow(() -> new EntityNotFoundException());
 		} catch (EntityNotFoundException e) {
@@ -126,7 +135,14 @@ public class FornecedorService {
 
 	public void excluir(Integer id) {
 		try {
+			this.fornecedorRepository.findById(id)
+					.map(f -> this.logService.salvar(LocalDateTime.now(),
+							"Fornecedor " + f.getFantasia(), TipoLog.EXCLUSAO))
+					.orElseThrow(() -> new EntityNotFoundException());
 			this.fornecedorRepository.deleteById(id);
+		} catch (EntityNotFoundException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "fornecedor não localizado!",
+					e.getCause());
 		} catch (DataIntegrityViolationException e) {
 			throw new ResponseStatusException(HttpStatus.CONFLICT,
 					"não é possível excluir o fornecedor!", e.getCause());

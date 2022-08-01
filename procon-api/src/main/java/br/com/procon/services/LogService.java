@@ -1,16 +1,18 @@
 package br.com.procon.services;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import br.com.procon.models.Configuracao;
+import br.com.procon.models.Log;
+import br.com.procon.models.Usuario;
 import br.com.procon.models.enums.TipoLog;
-import br.com.procon.repositories.ConfiguracaoRepository;
+import br.com.procon.repositories.LogRepository;
 
 /**
  * 
@@ -18,19 +20,16 @@ import br.com.procon.repositories.ConfiguracaoRepository;
  *
  */
 @Service
-public class ConfiguracaoService {
+public class LogService {
 
 	@Autowired
-	private ConfiguracaoRepository configRepository;
-	@Autowired
-	private LogService logService;
+	private LogRepository logRepository;
 
-	public Configuracao salvar(Configuracao config) {
+	public Log salvar(LocalDateTime data, String log, TipoLog tipo) {
 		try {
-			config.setId(1);
-			this.logService.salvar(LocalDateTime.now(), "Configurações alteradas",
-					TipoLog.ATUALIZACAO);
-			return this.configRepository.save(config);
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			Usuario usuario = (Usuario) auth.getPrincipal();
+			return this.logRepository.save(new Log(null, data, usuario, log, tipo));
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
@@ -38,10 +37,9 @@ public class ConfiguracaoService {
 		}
 	}
 
-	public Configuracao buscar() {
+	public void excluir(Integer id) {
 		try {
-			return this.configRepository.findById(1)
-					.orElse(new Configuracao(1, "", "", "", new HashSet<>(), "", ""));
+			this.logRepository.deleteById(id);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,

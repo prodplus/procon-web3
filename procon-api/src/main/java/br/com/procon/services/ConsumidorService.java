@@ -1,5 +1,6 @@
 package br.com.procon.services;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +21,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import br.com.procon.models.Consumidor;
 import br.com.procon.models.dtos.ConsumidorDto;
+import br.com.procon.models.enums.TipoLog;
 import br.com.procon.repositories.ConsumidorRepository;
 
 /**
@@ -32,10 +34,15 @@ public class ConsumidorService {
 
 	@Autowired
 	private ConsumidorRepository consumidorRepository;
+	@Autowired
+	private LogService logService;
 
 	public Consumidor salvar(@Valid Consumidor consumidor) {
 		try {
-			return this.consumidorRepository.save(consumidor);
+			Consumidor cons = this.consumidorRepository.save(consumidor);
+			this.logService.salvar(LocalDateTime.now(), "Consumidor " + cons.getDenominacao(),
+					TipoLog.INSERCAO);
+			return cons;
 		} catch (ValidationException e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "erro de validação!",
 					e.getCause());
@@ -59,7 +66,10 @@ public class ConsumidorService {
 				c.setFones(consumidor.getFones());
 				c.setNascimento(consumidor.getNascimento());
 				c.setTipo(consumidor.getTipo());
-				return this.consumidorRepository.save(c);
+				Consumidor cons = this.consumidorRepository.save(c);
+				this.logService.salvar(LocalDateTime.now(), "Consumidor " + cons.getDenominacao(),
+						TipoLog.ATUALIZACAO);
+				return cons;
 			}).orElseThrow(() -> new EntityNotFoundException());
 		} catch (EntityNotFoundException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "consumidor não localizado!",
@@ -126,7 +136,14 @@ public class ConsumidorService {
 
 	public void excluir(Integer id) {
 		try {
+			this.consumidorRepository.findById(id)
+					.map(c -> this.logService.salvar(LocalDateTime.now(),
+							"Consumidor " + c.getDenominacao(), TipoLog.EXCLUSAO))
+					.orElseThrow(() -> new EntityNotFoundException());
 			this.consumidorRepository.deleteById(id);
+		} catch (EntityNotFoundException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "consumidor não localizado!",
+					e.getCause());
 		} catch (DataIntegrityViolationException e) {
 			throw new ResponseStatusException(HttpStatus.CONFLICT,
 					"não é possível excluir o consumidor!", e.getCause());
