@@ -8,6 +8,7 @@ import { Page } from 'src/app/models/auxiliares/page';
 import { RespModal } from 'src/app/models/auxiliares/resp-modal';
 import { AtendimentoDto } from 'src/app/models/dtos/atendimento-dto';
 import { AtendimentoService } from 'src/app/services/atendimento.service';
+import { RelatorioService } from 'src/app/services/relatorio.service';
 
 @Component({
   selector: 'app-lista-atendimentos',
@@ -30,7 +31,8 @@ export class ListaAtendimentosComponent implements OnInit, AfterViewInit {
 
   constructor(
     private builder: FormBuilder,
-    private atendimentoService: AtendimentoService
+    private atendimentoService: AtendimentoService,
+    private relService: RelatorioService
   ) { }
 
   ngOnInit(): void {
@@ -135,6 +137,13 @@ export class ListaAtendimentosComponent implements OnInit, AfterViewInit {
   concordou(resp: RespModal) {
     if (resp.confirmou && this.idAtendimento != null)
       this.excluir(this.idAtendimento);
+  }
+
+  imprimir(id: number) {
+    this.relService.atendimentoIni(id).subscribe({
+      next: (x) => window.open(window.URL.createObjectURL(x), '_blank'),
+      error: (err) => this.modal.openErro(err),
+    });
   }
 
 }

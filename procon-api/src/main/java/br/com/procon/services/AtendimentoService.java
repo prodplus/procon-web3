@@ -110,6 +110,20 @@ public class AtendimentoService {
 		}
 	}
 
+	public Atendimento buscarI(Integer id) {
+		try {
+			return this.atendimentoRepository.findById(id)
+					.orElseThrow(() -> new EntityNotFoundException());
+		} catch (EntityNotFoundException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "atendimento não localizado!",
+					e.getCause());
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+					"ocorreu um erro no servidor!", e.getCause());
+		}
+	}
+
 	public Page<AtendimentoDto> listar(int pagina, int quant) {
 		try {
 			Pageable pageable = PageRequest.of(pagina, quant, Direction.DESC, "id");
