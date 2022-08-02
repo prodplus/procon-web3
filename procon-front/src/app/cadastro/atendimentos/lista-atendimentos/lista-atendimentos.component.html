@@ -1,0 +1,67 @@
+<app-pagina [isLoading]="isLoading">
+  <app-titulo texto="Atendimentos"></app-titulo>
+  <app-controle [rota]="['novo']" mensagem="cadastrar novo atendimento">
+  </app-controle>
+  <div class="row col-12 mb-4">
+    <div class="col-5">
+      <app-search-input [form]="searchFormCons" label="consumidor">
+      </app-search-input>
+    </div>
+    <div class="col-5">
+      <app-search-input [form]="searchFormForn" label="fornecedor">
+      </app-search-input>
+    </div>
+  </div>
+
+  <app-tabela [tamanhoTotal]="page.totalElements" [tamanhoPagina]="page.size"
+      [pagina]="pagina" (mudaPagina)="mudaPagina($event)">
+    <caption *ngIf="page.totalElements == 0">
+      nenhum atendimento cadastrado...
+    </caption>
+    <caption *ngIf="page.totalElements > 0">
+      atendimentos do ano: {{ atendimentosAno }}
+    </caption>
+    <thead class="bg-dark text-white">
+      <th class="text-center">nro</th>
+      <th class="text-center">data</th>
+      <th class="text-center">Consumidor(es)</th>
+      <th class="text-center">Fornecedor(es)</th>
+      <th class="text-center th-botao">prt</th>
+      <th class="text-center th-botao">exc</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let ate of page.content">
+        <td class="align-middle text-center" [routerLink]="['novo', ate.id]"
+            style="cursor: pointer;">
+          {{ ate.id }}
+        </td>
+        <td class="align-middle text-center" [routerLink]="['novo', ate.id]"
+            style="cursor: pointer;">
+          {{ ate.data | date: 'dd/MM/yyyy' }}
+        </td>
+        <td class="align-middle" [routerLink]="['novo', ate.id]"
+            style="cursor: pointer;">
+          <div *ngFor="let cons of ate.consumidores">
+            {{ cons.denominacao }}
+          </div>
+        </td>
+        <td class="align-middle" [routerLink]="['novo', ate.id]"
+            style="cursor: pointer;">
+          <div *ngFor="let forn of ate.fornecedores">
+            {{ forn.fantasia }}
+          </div>
+        </td>
+        <td class="text-center align-middle">
+          <button class="btn btn-dark btn-sm">
+            <fa-icon [icon]="iPrint"></fa-icon>
+          </button>
+        </td>
+        <td class="text-center align-middle">
+          <app-botao-excluir-tab [id]="ate.id" (clique)="chamaModal($event)">
+          </app-botao-excluir-tab>
+        </td>
+      </tr>
+    </tbody>
+  </app-tabela>
+</app-pagina>
+<app-modal #modal (sim)="concordou($event)"></app-modal>

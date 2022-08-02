@@ -11,6 +11,8 @@ import { ListaConsumidoresComponent } from './consumidores/lista-consumidores/li
 import { CadConsumidoresComponent } from './consumidores/cad-consumidores/cad-consumidores.component';
 import { ListaFornecedoresComponent } from './fornecedores/lista-fornecedores/lista-fornecedores.component';
 import { CadFornecedoresComponent } from './fornecedores/cad-fornecedores/cad-fornecedores.component';
+import { ListaAtendimentosComponent } from './atendimentos/lista-atendimentos/lista-atendimentos.component';
+import { CadAtendimentosComponent } from './atendimentos/cad-atendimentos/cad-atendimentos.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,9 @@ import { CadFornecedoresComponent } from './fornecedores/cad-fornecedores/cad-fo
     ListaConsumidoresComponent,
     CadConsumidoresComponent,
     ListaFornecedoresComponent,
-    CadFornecedoresComponent
+    CadFornecedoresComponent,
+    ListaAtendimentosComponent,
+    CadAtendimentosComponent
   ],
   imports: [
     CommonModule,
