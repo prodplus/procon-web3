@@ -26,6 +26,10 @@ import { TabelaComponent } from './tabela/tabela.component';
 import { CadEnderecoComponent } from './cad-endereco/cad-endereco.component';
 import { SearchInputComponent } from './search-input/search-input.component';
 import { CadFoneComponent } from './cad-fone/cad-fone.component';
+import { SelecConsComponent } from './selec-cons/selec-cons.component';
+import { SelecFornComponent } from './selec-forn/selec-forn.component';
+import { TabConsumidoresComponent } from './tab-consumidores/tab-consumidores.component';
+import { TabFornecedoresComponent } from './tab-fornecedores/tab-fornecedores.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +50,11 @@ import { CadFoneComponent } from './cad-fone/cad-fone.component';
     TituloComponent,
     CadEnderecoComponent,
     SearchInputComponent,
-    CadFoneComponent
+    CadFoneComponent,
+    SelecConsComponent,
+    SelecFornComponent,
+    TabConsumidoresComponent,
+    TabFornecedoresComponent
   ],
   imports: [
     CommonModule,
@@ -74,7 +82,11 @@ import { CadFoneComponent } from './cad-fone/cad-fone.component';
     TituloComponent,
     CadEnderecoComponent,
     SearchInputComponent,
-    CadFoneComponent
+    CadFoneComponent,
+    SelecConsComponent,
+    SelecFornComponent,
+    TabConsumidoresComponent,
+    TabFornecedoresComponent
   ]
 })
 export class ComponentsModule { }

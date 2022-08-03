@@ -93,7 +93,7 @@ export class CadFornecedoresComponent implements OnInit, AfterViewInit {
     );
 
     this.form.get('cnpj')?.valueChanges.subscribe((value) => {
-      if (value.length >= 14) {
+      if (value.length >= 14 && this.idExterno != null && this.idInterno != null) {
         this.fornecedorService.cnpjExiste(value).subscribe(
           (v) => {
             if (v) this.form.get('cnpj')?.setErrors({ fornExiste: true });

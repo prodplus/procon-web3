@@ -1,0 +1,32 @@
+<app-search-input [form]="searchForm" label="consumidor"></app-search-input>
+<div class="text-center mb-4">
+  <button class="btn btn-success" (click)="cadastrarNovo()">
+    novo consumidor
+  </button>
+</div>
+<table class="table table-sm table-striped table-bordered table-primary">
+  <thead class="bg-primary text-white">
+    <th class="text-center">Denominação</th>
+    <th class="text-center">CPF/CNPJ</th>
+    <th class="text-center th-botao">rem</th>
+  </thead>
+  <tbody>
+    <tr *ngFor="let cons of page.content">
+      <td class="align-middle">{{ cons.denominacao }}</td>
+      <td class="text-center align-middle">
+        {{ cons.cadastro | mask: mascaraCadastro(cons.tipo) }}
+      </td>
+      <td class="text-center align-middle">
+        <button class="btn btn-success btn-sm" title="selecionar" type="button"
+            (click)="selecionarConsumidor(cons)">
+          <fa-icon [icon]="iCheck"></fa-icon>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div class="text-center mb-4">
+  <button class="btn btn-danger" (click)="cancelar()" type="button">
+    cancelar
+  </button>
+</div>

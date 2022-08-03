@@ -1,1 +1,82 @@
-<p>cad-atendimentos works!</p>
+<app-pagina [isLoading]="isLoading" *ngIf="!editandoCons && !editandoForn">
+  <app-titulo texto="Cadastro de Atendimentos"></app-titulo>
+  <div class="text-center mb-4">
+    <app-botao-cancelar (clique)="cancelar()">
+    </app-botao-cancelar>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="salvar()">
+    <div class="col-2 mb-3">
+      <label for="inputData" class="form-label">Data:</label>
+      <input type="date" id="inputData" [ngClass]="getInputClass('data')" #input
+          formControlName="data" style="text-align: center;" autofocus>
+      <div class="invalid-feedback">
+        obrigatório!
+      </div>
+    </div>
+
+    <!-- Consumidores -->
+    <div #scrollCons></div>
+    <div class="card mb-3 border border-2">
+      <div class="card-header">
+        <div class="card-title">Consumidor(es)</div>
+      </div>
+      <div class="card-body">
+        <app-selec-cons *ngIf="selecionandoCons; else consumidores;"
+            (selecao)="consumidorSelecionado($event)" (novo)="novoConsumidor($event)">
+        </app-selec-cons>
+        <ng-template #consumidores>
+          <app-tab-consumidores [consumidores]="atendimento.consumidores"
+              [selecionando]="selecionandoCons" (selecionar)="selecionandoCEvent($event)">
+          </app-tab-consumidores>
+        </ng-template>
+      </div>
+    </div>
+
+    <!-- Fornecedores -->
+    <div #scrollForn></div>
+    <div class="card mb-3 border border-2">
+      <div class="card-header">
+        <div class="card-title">Fornecedor(es)</div>
+      </div>
+      <div class="card-body">
+        <app-selec-forn *ngIf="selecionandoForn; else fornecedores;"
+            (selecao)="fornecedorSelecionado($event)" (novo)="novoFornecedor($event)">
+        </app-selec-forn>
+        <ng-template #fornecedores>
+          <app-tab-fornecedores [fornecedores]="atendimento.fornecedores"
+              [selecionado]="selecionandoForn" (selecionar)="selecionandoFEvent($event)">
+          </app-tab-fornecedores>
+        </ng-template>
+      </div>
+    </div>
+
+    <!-- Editor -->
+    <div class="card mb-3 border border-2">
+      <div class="card-header">
+        <div class="card-title">Relato</div>
+      </div>
+      <div class="card-body">
+        <div class="col-12">
+          <textarea id="inputRelato" cols="30" rows="15"
+              class="form-control border-2" formControlName="relato">
+          </textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-grid gap-1">
+      <button type="submit" class="btn btn-success btn-lg"
+          [disabled]="form.invalid || atendimento.consumidores.length == 0 || atendimento.fornecedores.length == 0">
+        salvar
+      </button>
+    </div>
+  </form>
+</app-pagina>
+<app-modal #modal></app-modal>
+<app-cad-consumidores [idExterno]="idConsumidor" *ngIf="editandoCons"
+    (salvo)="consumidorSalvo($event)">
+</app-cad-consumidores>
+<app-cad-fornecedores [idExterno]="idFornecedor" *ngIf="editandoForn"
+    (salvo)="fornecedorSalvo($event)">
+</app-cad-fornecedores>

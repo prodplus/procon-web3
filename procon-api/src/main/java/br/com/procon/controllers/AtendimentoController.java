@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.procon.models.auxiliares.FornecedorNro;
+import br.com.procon.models.auxiliares.RelatoId;
 import br.com.procon.models.dtos.AtendimentoDto;
 import br.com.procon.models.forms.AtendimentoForm;
 import br.com.procon.services.AtendimentoService;
@@ -83,6 +84,11 @@ public class AtendimentoController {
 	@GetMapping("/ranking/{ano}")
 	public ResponseEntity<List<FornecedorNro>> ranking(@PathVariable Integer ano) {
 		return ResponseEntity.ok(this.atendimentoService.ranking(ano));
+	}
+
+	@GetMapping("/relato/{id}")
+	public ResponseEntity<RelatoId> getRelato(@PathVariable Integer id) {
+		return ResponseEntity.ok(this.atendimentoService.getRelato(id));
 	}
 
 }

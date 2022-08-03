@@ -20,6 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import br.com.procon.models.Atendimento;
 import br.com.procon.models.auxiliares.FornecedorNro;
+import br.com.procon.models.auxiliares.RelatoId;
 import br.com.procon.models.dtos.AtendimentoDto;
 import br.com.procon.models.dtos.FornecedorDto;
 import br.com.procon.models.enums.TipoLog;
@@ -214,6 +215,20 @@ public class AtendimentoService {
 				});
 			});
 			return fornecedores;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+					"ocorreu um erro no servidor!", e.getCause());
+		}
+	}
+
+	public RelatoId getRelato(Integer id) {
+		try {
+			return this.atendimentoRepository.findById(id).map(a -> new RelatoId(id, a.getRelato()))
+					.orElseThrow(() -> new EntityNotFoundException());
+		} catch (EntityNotFoundException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "atendimento não localizado!",
+					e.getCause());
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,

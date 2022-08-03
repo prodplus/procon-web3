@@ -1,0 +1,42 @@
+<div class="text-center mb-2">
+  <button class="btn btn-success" (click)="selecionarButton()" type="button">
+    adicionar fornecedor
+  </button>
+</div>
+<table class="table table-sm table-striped table-bordered table-success">
+  <caption *ngIf="fornecedores.length == 0" class="text-danger">
+    nenhum fornecedor selecionado...
+  </caption>
+  <thead class="bg-success text-white">
+    <th></th>
+    <th class="text-center">Fantasia</th>
+    <th class="text-center">Razão Social</th>
+    <th class="text-center">CNPJ</th>
+    <th class="text-center th-botao">rem</th>
+  </thead>
+  <tbody>
+    <tr *ngFor="let forn of fornecedores; index as i;">
+      <td class="text-center align-middle">{{ i + 1 }}</td>
+      <td class="align-middle" style="cursor: pointer;"
+          [routerLink]="['/cadastros/fornecedores/novo', forn.id]">
+        {{ forn.fantasia }}
+      </td>
+      <td class="align-middle" style="cursor: pointer;"
+          [routerLink]="['/cadastros/fornecedores/novo', forn.id]">
+        {{ forn.razao }}
+      </td>
+      <td class="align-middle" style="cursor: pointer;"
+          [routerLink]="['/cadastros/fornecedores/novo', forn.id]">
+        <div *ngIf="forn.cnpj != null">
+          {{ forn.cnpj | mask: '00.000.000/0000-00' }}
+        </div>
+      </td>
+      <td class="text-center align-middle">
+        <button class="btn btn-sm btn-danger" type="button" title="remover fornecedor"
+            (click)="removerFornecedor(i)">
+          <fa-icon [icon]="iMinus"></fa-icon>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>

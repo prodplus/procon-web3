@@ -28,7 +28,9 @@
         </td>
         <td class="text-end align-middle" style="cursor: pointer;"
             [routerLink]="['/cadastros/fornecedores/novo', forn.id]">
-          {{ forn.cnpj | mask: '00.000.000/0000-00' }}
+          <div *ngIf="forn.cnpj != null">
+            {{ forn.cnpj | mask: '00.000.000/0000-00' }}
+          </div>
         </td>
         <td class="text-center align-middle">
           <app-botao-excluir-tab [id]="forn.id" (clique)="chamaModal($event)">

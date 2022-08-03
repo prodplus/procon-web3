@@ -7,6 +7,7 @@ import { debounceTime } from 'rxjs';
 import { ModalComponent } from 'src/app/components/modal/modal.component';
 import { Endereco } from 'src/app/models/auxiliares/endereco';
 import { Consumidor } from 'src/app/models/consumidor';
+import { ConsumidorDto } from 'src/app/models/dtos/consumidor-dto';
 import { ConsumidorService } from 'src/app/services/consumidor.service';
 import { EnumService } from 'src/app/services/enum.service';
 import { getInputClass, getInputUpperClass, getSelectClass } from 'src/app/utils/validation';
