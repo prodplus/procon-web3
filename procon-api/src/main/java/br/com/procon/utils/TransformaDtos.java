@@ -1,18 +1,22 @@
 package br.com.procon.utils;
 
+import static br.com.procon.utils.AutosUtils.getNroAutos;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 
 import br.com.procon.models.Atendimento;
 import br.com.procon.models.Consumidor;
 import br.com.procon.models.Fornecedor;
+import br.com.procon.models.Processo;
 import br.com.procon.models.dtos.AtendimentoDto;
 import br.com.procon.models.dtos.ConsumidorDto;
 import br.com.procon.models.dtos.FornecedorDto;
+import br.com.procon.models.dtos.ProcessoDto;
+import br.com.procon.models.dtos.UsuarioDto;
 
 /**
  * 
@@ -29,19 +33,14 @@ public class TransformaDtos {
 	 * @param pageable
 	 * @return
 	 */
-	public static Page<AtendimentoDto> transformaDtos(List<AtendimentoDto> lista,
-			Page<Atendimento> page, Pageable pageable) {
+	public static Page<AtendimentoDto> transformaDtos(Page<Atendimento> page) {
+		List<AtendimentoDto> lista = new ArrayList<>();
 		page.getContent().forEach(a -> {
-			List<ConsumidorDto> consumidores = new ArrayList<>();
-			List<FornecedorDto> fornecedores = new ArrayList<>();
-			a.getConsumidores().forEach(c -> consumidores.add(new ConsumidorDto(c.getId(),
-					c.getTipo().name(), c.getDenominacao(), c.getCadastro())));
-			a.getFornecedores().forEach(f -> fornecedores.add(new FornecedorDto(f.getId(),
-					f.getFantasia(), f.getRazaoSocial(), f.getCnpj())));
-			lista.add(new AtendimentoDto(a.getId(), consumidores, fornecedores, a.getData(),
+			lista.add(new AtendimentoDto(a.getId(), transformaConsDtos(a.getConsumidores()),
+					transformaFornDtos(a.getFornecedores()), a.getData(),
 					a.getAtendente().getId()));
 		});
-		return new PageImpl<>(lista, pageable, page.getTotalElements());
+		return new PageImpl<>(lista, page.getPageable(), page.getTotalElements());
 	}
 
 	/**
@@ -84,6 +83,39 @@ public class TransformaDtos {
 		fornecedores.forEach(f -> lista.add(
 				new FornecedorDto(f.getId(), f.getFantasia(), f.getRazaoSocial(), f.getCnpj())));
 		return lista;
+	}
+
+	/**
+	 * 
+	 * @param processos
+	 * @return
+	 */
+	public static List<ProcessoDto> transformaProcDtos(List<Processo> processos) {
+		List<ProcessoDto> lista = new ArrayList<>();
+		processos.forEach(p -> lista.add(new ProcessoDto(p.getId(), p.getAutos(), p.getData(),
+				transformaConsDtos(p.getConsumidores()), transformaConsDtos(p.getRepresentantes()),
+				transformaFornDtos(p.getFornecedores()), p.getSituacao(),
+				new UsuarioDto(p.getAtendente().getId(), p.getAtendente().getNome(),
+						p.getAtendente().getEmail(), p.getAtendente().getPerfil().getRole(),
+						p.getAtendente().isAtivo()),
+				AutosUtils.getNroAutos(p.getAutos()))));
+		return lista;
+	}
+
+	public static Page<ProcessoDto> transformaProcDtos(Page<Processo> page) {
+		List<ProcessoDto> dtos = new ArrayList<>();
+		page.getContent().forEach(proc -> {
+			dtos.add(new ProcessoDto(proc.getId(), proc.getAutos(), proc.getData(),
+					transformaConsDtos(proc.getConsumidores()),
+					transformaConsDtos(proc.getRepresentantes()),
+					transformaFornDtos(proc.getFornecedores()), proc.getSituacao(),
+					new UsuarioDto(proc.getAtendente().getId(), proc.getAtendente().getNome(),
+							proc.getAtendente().getEmail(),
+							proc.getAtendente().getPerfil().getRole(),
+							proc.getAtendente().isAtivo()),
+					getNroAutos(proc.getAutos())));
+		});
+		return new PageImpl<>(dtos, page.getPageable(), page.getTotalElements());
 	}
 
 }

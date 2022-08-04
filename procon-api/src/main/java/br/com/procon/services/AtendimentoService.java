@@ -1,5 +1,7 @@
 package br.com.procon.services;
 
+import static br.com.procon.utils.TransformaDtos.transformaDtos;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -128,9 +130,8 @@ public class AtendimentoService {
 	public Page<AtendimentoDto> listar(int pagina, int quant) {
 		try {
 			Pageable pageable = PageRequest.of(pagina, quant, Direction.DESC, "id");
-			List<AtendimentoDto> lista = new ArrayList<>();
 			Page<Atendimento> page = this.atendimentoRepository.findAll(pageable);
-			return TransformaDtos.transformaDtos(lista, page, pageable);
+			return transformaDtos(page);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
@@ -141,11 +142,10 @@ public class AtendimentoService {
 	public Page<AtendimentoDto> listarConsumidor(int pagina, int quant, String parametro) {
 		try {
 			Pageable pageable = PageRequest.of(pagina, quant, Direction.DESC, "id");
-			List<AtendimentoDto> lista = new ArrayList<>();
 			Page<Atendimento> page = this.atendimentoRepository
 					.findAllByConsumidoresDenominacaoContainingIgnoreCaseOrConsumidoresCadastroContaining(
 							parametro, parametro, pageable);
-			return TransformaDtos.transformaDtos(lista, page, pageable);
+			return transformaDtos(page);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
@@ -156,11 +156,10 @@ public class AtendimentoService {
 	public Page<AtendimentoDto> listarFornecedor(int pagina, int quant, String parametro) {
 		try {
 			Pageable pageable = PageRequest.of(pagina, quant, Direction.DESC, "id");
-			List<AtendimentoDto> lista = new ArrayList<>();
 			Page<Atendimento> page = this.atendimentoRepository
 					.findAllByFornecedoresFantasiaContainingIgnoreCaseOrFornecedoresRazaoSocialContainingIgnoreCase(
 							parametro, parametro, pageable);
-			return TransformaDtos.transformaDtos(lista, page, pageable);
+			return transformaDtos(page);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,

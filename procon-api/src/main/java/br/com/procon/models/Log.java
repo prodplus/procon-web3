@@ -29,7 +29,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Log implements Serializable {
+public class Log implements Serializable, Comparable<Log> {
 
 	private static final long serialVersionUID = 7174716353137842353L;
 	@Id
@@ -45,5 +45,12 @@ public class Log implements Serializable {
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false, length = 20)
 	private TipoLog tipo;
+
+	@Override
+	public int compareTo(Log o) {
+		if (this.getData() != null && o.getData() != null)
+			return this.getData().compareTo(o.getData());
+		return 0;
+	}
 
 }

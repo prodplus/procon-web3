@@ -1,8 +1,10 @@
 package br.com.procon.services;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -35,6 +37,11 @@ public class LogService {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
 					"ocorreu um erro no servidor!", e.getCause());
 		}
+	}
+
+	public List<Log> listar(LocalDateTime inicio, LocalDateTime fim) {
+		return this.logRepository.findAllByDataBetween(inicio, fim,
+				Sort.by(Sort.Direction.ASC, "data"));
 	}
 
 	public void excluir(Integer id) {

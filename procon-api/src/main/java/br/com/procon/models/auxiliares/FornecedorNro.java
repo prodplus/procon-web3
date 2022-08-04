@@ -19,11 +19,18 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class FornecedorNro implements Serializable {
+public class FornecedorNro implements Serializable, Comparable<FornecedorNro> {
 
 	private static final long serialVersionUID = -5477599842443711857L;
 	@EqualsAndHashCode.Include
 	private FornecedorDto fornecedor;
 	private Integer processos;
-	
+
+	@Override
+	public int compareTo(FornecedorNro o) {
+		if (this.processos != null && o.getProcessos() != null)
+			return this.processos.compareTo(o.getProcessos()) * -1;
+		return 0;
+	}
+
 }
