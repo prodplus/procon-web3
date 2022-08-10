@@ -33,4 +33,12 @@ public class RelatorioController {
 				.contentType(MediaType.APPLICATION_PDF).body(this.relService.atendimentoIni(id));
 	}
 
+	@GetMapping(path = "/processo/{id}", produces = MediaType.APPLICATION_PDF_VALUE)
+	public ResponseEntity<InputStreamResource> processoIni(@PathVariable Integer id) {
+		return ResponseEntity.ok()
+				.header("Content-Disposition",
+						"inline; filename=processo_" + id.toString() + ".pdf")
+				.contentType(MediaType.APPLICATION_PDF).body(this.relService.processoIni(id));
+	}
+
 }

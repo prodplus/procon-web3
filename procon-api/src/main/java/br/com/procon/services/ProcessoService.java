@@ -35,7 +35,9 @@ import br.com.procon.models.Processo;
 import br.com.procon.models.auxiliares.FornecedorNro;
 import br.com.procon.models.auxiliares.Movimento;
 import br.com.procon.models.auxiliares.ProcDesc;
+import br.com.procon.models.auxiliares.RelatoId;
 import br.com.procon.models.dtos.FornecedorDto;
+import br.com.procon.models.dtos.LogDto;
 import br.com.procon.models.dtos.ProcessoDto;
 import br.com.procon.models.dtos.UsuarioDto;
 import br.com.procon.models.enums.Situacao;
@@ -73,6 +75,7 @@ public class ProcessoService {
 							processo.getData().getYear()));
 				Processo proc = this.processoRepository.save(processo.converter(
 						this.consumidorService, this.fornecedorService, this.usuarioService));
+				proc.setSituacao(Situacao.AUTUADO);
 				this.setMovimentacao(proc.getId(), Arrays.asList(new Movimento(proc.getData(),
 						Situacao.BALCAO, Situacao.AUTUADO, "", null, null)));
 				this.logService.salvar(LocalDateTime.now(), "Processo " + proc.getAutos(),
@@ -100,6 +103,7 @@ public class ProcessoService {
 				p = processo.converter(this.consumidorService, this.fornecedorService,
 						this.usuarioService);
 				p.setId(id);
+				p.setSituacao(apuraSituacao(id));
 				return toProcessoDto(this.processoRepository.save(p));
 			}).orElseThrow(() -> new EntityNotFoundException());
 		} catch (EntityNotFoundException e) {
@@ -110,6 +114,27 @@ public class ProcessoService {
 					e.getCause());
 		} catch (DataIntegrityViolationException e) {
 			throw new ResponseStatusException(HttpStatus.CONFLICT, "processo já cadastrado!",
+					e.getCause());
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+					"ocorreu um erro no servidor!", e.getCause());
+		}
+	}
+
+	private Situacao apuraSituacao(Integer id) {
+		return this.processoRepository.findById(id).map(p -> {
+			List<Movimento> movimentacao = p.getMovimentacao();
+			return movimentacao.get(0).getPara();
+		}).orElseThrow(() -> new EntityNotFoundException());
+	}
+
+	public RelatoId getRelato(Integer id) {
+		try {
+			return this.processoRepository.findById(id).map(p -> new RelatoId(id, p.getRelato()))
+					.orElseThrow(() -> new EntityNotFoundException());
+		} catch (EntityNotFoundException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "processo não localizado!",
 					e.getCause());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -163,9 +188,23 @@ public class ProcessoService {
 		}
 	}
 
+	public Processo buscarI(Integer id) {
+		try {
+			return this.processoRepository.findById(id)
+					.orElseThrow(() -> new EntityNotFoundException());
+		} catch (EntityNotFoundException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "processo não localizado!",
+					e.getCause());
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+					"ocorreu um erro no servidor!", e.getCause());
+		}
+	}
+
 	public Page<ProcessoDto> listar(int pagina, int quant) {
 		try {
-			Pageable pageable = PageRequest.of(pagina, quant, Direction.ASC, "data");
+			Pageable pageable = PageRequest.of(pagina, quant, Direction.DESC, "data");
 			Page<Processo> page = this.processoRepository.findAll(pageable);
 			return transformaProcDtos(page);
 		} catch (Exception e) {
@@ -177,7 +216,7 @@ public class ProcessoService {
 
 	public Page<ProcessoDto> listarPorAutos(int pagina, int quant, String autos) {
 		try {
-			Pageable pageable = PageRequest.of(pagina, quant, Direction.ASC, "data");
+			Pageable pageable = PageRequest.of(pagina, quant, Direction.DESC, "data");
 			Page<Processo> page = this.processoRepository.findAllByAutosContaining(autos, pageable);
 			return transformaProcDtos(page);
 		} catch (Exception e) {
@@ -189,7 +228,7 @@ public class ProcessoService {
 
 	public Page<ProcessoDto> listarPorConsumidor(int pagina, int quant, String parametro) {
 		try {
-			Pageable pageable = PageRequest.of(pagina, quant, Direction.ASC, "data");
+			Pageable pageable = PageRequest.of(pagina, quant, Direction.DESC, "data");
 			Page<Processo> page = this.processoRepository
 					.findAllByConsumidoresDenominacaoContainingIgnoreCaseOrConsumidoresCadastroContaining(
 							parametro, parametro, pageable);
@@ -214,7 +253,7 @@ public class ProcessoService {
 
 	public Page<ProcessoDto> listarPorFornecedor(int pagina, int quant, String parametro) {
 		try {
-			Pageable pageable = PageRequest.of(pagina, quant, Direction.ASC, "data");
+			Pageable pageable = PageRequest.of(pagina, quant, Direction.DESC, "data");
 			Page<Processo> page = this.processoRepository
 					.findAllByFornecedoresFantasiaContainingIgnoreCaseOrFornecedoresRazaoSocialContainingIgnoreCaseOrFornecedoresCnpjContaining(
 							parametro, parametro, parametro, pageable);
@@ -228,7 +267,7 @@ public class ProcessoService {
 
 	public Page<ProcessoDto> listarPorFornecedor(int pagina, int quant, Integer idFornecedor) {
 		try {
-			Pageable pageable = PageRequest.of(pagina, quant, Direction.ASC, "data");
+			Pageable pageable = PageRequest.of(pagina, quant, Direction.DESC, "data");
 			Page<Processo> page = this.processoRepository.findAllByFornecedoresId(idFornecedor,
 					pageable);
 			return transformaProcDtos(page);
@@ -241,7 +280,7 @@ public class ProcessoService {
 
 	public Page<ProcessoDto> listarPorSituacao(int pagina, int quant, Situacao situacao) {
 		try {
-			Pageable pageable = PageRequest.of(pagina, quant, Direction.ASC, "data");
+			Pageable pageable = PageRequest.of(pagina, quant, Direction.DESC, "data");
 			if (situacao.equals(Situacao.EM_ANDAMENTO)) {
 				Page<Processo> page = this.processoRepository
 						.findAllBySituacaoNotAndSituacaoNotAndSituacaoNot(Situacao.ENCERRADO,
@@ -345,11 +384,18 @@ public class ProcessoService {
 		}
 	}
 
-	public List<Log> movimentacaoDia(LocalDate dia) {
+	public List<LogDto> movimentacaoDia(LocalDate dia) {
 		try {
 			LocalDateTime inicio = LocalDateTime.of(dia, LocalTime.of(0, 0));
 			LocalDateTime fim = LocalDateTime.of(dia, LocalTime.of(23, 59));
-			return this.logService.listar(inicio, fim);
+			List<Log> logs = this.logService.listar(inicio, fim);
+			List<LogDto> dtos = new ArrayList<>();
+			logs.forEach(l -> dtos.add(new LogDto(l.getData(),
+					new UsuarioDto(l.getUsuario().getId(), l.getUsuario().getNome(),
+							l.getUsuario().getEmail(), l.getUsuario().getPerfil().getRole(),
+							l.getUsuario().isAtivo()),
+					l.getLog(), l.getTipo())));
+			return dtos;
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,

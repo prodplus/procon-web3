@@ -1,0 +1,62 @@
+<app-pagina [isLoading]="isLoading">
+  <app-titulo texto="Processos Cadastrados">
+  </app-titulo>
+  <app-controle [rota]="['novo']" mensagem="cadastrar novo processo">
+  </app-controle>
+  <div class="row col-12 mb-4">
+    <div class="col-4">
+      <app-search-input [form]="searchFormAutos" label="autos">
+      </app-search-input>
+    </div>
+    <div class="col-4">
+      <app-search-input [form]="searchFormCons" label="consumidor">
+      </app-search-input>
+    </div>
+    <div class="col-4">
+      <app-search-input [form]="searchFormForn" label="fornecedor">
+      </app-search-input>
+    </div>
+  </div>
+  <app-tabela [tamanhoTotal]="page.totalElements" [tamanhoPagina]="page.size"
+      [pagina]="pagina" (mudaPagina)="mudaPagina($event)">
+    <caption *ngIf="page.totalElements == 0">
+      nenhum processo cadastrado...
+    </caption>
+    <caption *ngIf="page.totalElements > 0">
+      processos cadastrados: {{ page.totalElements }}
+    </caption>
+    <thead class="bg-dark text-white">
+      <th class="text-center">Autos</th>
+      <th class="text-center">Consumidor(es)</th>
+      <th class="text-center">Fornecedor(es)</th>
+      <th class="text-center th-botao">ini</th>
+      <th class="text-center th-botao">exc</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let proc of page.content">
+        <td class="text-center align-middle">{{ proc.autos }}</td>
+        <td class="align-middle">
+          <div *ngFor="let cons of proc.consumidores">
+            {{ cons.denominacao }}
+          </div>
+        </td>
+        <td class="align-middle">
+          <div *ngFor="let forn of proc.fornecedores">
+            {{ getExibNomeForn(forn) }}
+          </div>
+        </td>
+        <td class="text-center align-middle">
+          <button class="btn btn-sm btn-dark text-warning" type="button"
+              (click)="imprimir(proc.id)">
+            <fa-icon [icon]="iPrint"></fa-icon>
+          </button>
+        </td>
+        <td class="text-center align-middle">
+          <app-botao-excluir-tab [id]="proc.id" (clique)="chamaModal($event)">
+          </app-botao-excluir-tab>
+        </td>
+      </tr>
+    </tbody>
+  </app-tabela>
+</app-pagina>
+<app-modal #modal (sim)="concordou($event)"></app-modal>

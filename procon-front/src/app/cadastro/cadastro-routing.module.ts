@@ -4,6 +4,7 @@ import { RouterModule, Routes } from "@angular/router";
 import { CadAtendimentoResolver } from "../resolvers/ca-atendimento.resolver";
 import { CadConsumidorResolver } from "../resolvers/cad-consumidor.resolver";
 import { CadFornecedorResolver } from "../resolvers/cad-fornecedor.resolver";
+import { CadProcessoResolver } from "../resolvers/cad-processo.resolver";
 import { CadAtendimentosComponent } from "./atendimentos/cad-atendimentos/cad-atendimentos.component";
 import { ListaAtendimentosComponent } from "./atendimentos/lista-atendimentos/lista-atendimentos.component";
 import { CadConsumidoresComponent } from "./consumidores/cad-consumidores/cad-consumidores.component";
@@ -11,6 +12,8 @@ import { ListaConsumidoresComponent } from "./consumidores/lista-consumidores/li
 import { CadFornecedoresComponent } from "./fornecedores/cad-fornecedores/cad-fornecedores.component";
 import { ListaFornecedoresComponent } from "./fornecedores/lista-fornecedores/lista-fornecedores.component";
 import { HomeComponent } from "./home/home.component";
+import { CadProcessosComponent } from "./processos/cad-processos/cad-processos.component";
+import { ListaProcessosComponent } from "./processos/lista-processos/lista-processos.component";
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -51,6 +54,20 @@ export const routes: Routes = [
           {
             path: ':id', component: CadAtendimentosComponent,
             resolve: { atendimento: CadAtendimentoResolver }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    path: 'processos', children: [
+      { path: '', component: ListaProcessosComponent },
+      {
+        path: 'novo', children: [
+          { path: '', component: CadProcessosComponent },
+          {
+            path: ':id', component: CadProcessosComponent,
+            resolve: { processo: CadProcessoResolver }
           }
         ]
       }

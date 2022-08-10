@@ -16,10 +16,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.procon.models.Log;
 import br.com.procon.models.auxiliares.FornecedorNro;
 import br.com.procon.models.auxiliares.Movimento;
 import br.com.procon.models.auxiliares.ProcDesc;
+import br.com.procon.models.auxiliares.RelatoId;
+import br.com.procon.models.dtos.LogDto;
 import br.com.procon.models.dtos.ProcessoDto;
 import br.com.procon.models.enums.Situacao;
 import br.com.procon.models.forms.ProcessoForm;
@@ -46,6 +47,11 @@ public class ProcessoController {
 	public ResponseEntity<ProcessoDto> atualizar(@PathVariable Integer id,
 			@RequestBody ProcessoForm processo) {
 		return ResponseEntity.ok(this.processoService.atualizar(id, processo));
+	}
+
+	@GetMapping("/relato/{id}")
+	public ResponseEntity<RelatoId> getRelato(@PathVariable Integer id) {
+		return ResponseEntity.ok(this.processoService.getRelato(id));
 	}
 
 	@PutMapping("/movimentos/{id}")
@@ -142,7 +148,7 @@ public class ProcessoController {
 	}
 
 	@GetMapping("/movimentacao_dia/{dia}")
-	public ResponseEntity<List<Log>> movimentacaoDia(
+	public ResponseEntity<List<LogDto>> movimentacaoDia(
 			@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dia) {
 		return ResponseEntity.ok(this.processoService.movimentacaoDia(dia));
 	}

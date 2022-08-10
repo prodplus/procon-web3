@@ -54,6 +54,22 @@
     </div>
     <div class="col-3">
       <div class="card">
+        <div class="card-header" style="cursor: pointer;"
+            [routerLink]="['/cadastros/processos']">
+          <div class="card-title">Processos</div>
+        </div>
+        <div class="card-body">
+          <div>
+            <a href="#" [routerLink]="['/cadastros/processos']" class="me-lg-5">
+              Listar
+            </a>
+            <a href="#" [routerLink]="['/cadastros/processos/novo']">Novo</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-3">
+      <div class="card">
         <div class="card-header" style="cursor: pointer;" [routerLink]="['/cadastros/usuarios']">
           <div class="card-title">Usuários</div>
         </div>

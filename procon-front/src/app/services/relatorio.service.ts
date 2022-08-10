@@ -12,4 +12,8 @@ export class RelatorioService {
   atendimentoIni(id: number): Observable<Blob> {
     return this.http.get(`${URL}/atendimento/${id}`, { responseType: 'blob' });
   }
+
+  processoIni(id: number): Observable<Blob> {
+    return this.http.get(`${URL}/processo/${id}`, { responseType: 'blob' });
+  }
 }

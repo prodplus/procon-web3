@@ -3,6 +3,7 @@ package br.com.procon.utils;
 import static br.com.procon.utils.AutosUtils.getNroAutos;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -105,16 +106,20 @@ public class TransformaDtos {
 	public static Page<ProcessoDto> transformaProcDtos(Page<Processo> page) {
 		List<ProcessoDto> dtos = new ArrayList<>();
 		page.getContent().forEach(proc -> {
+			UsuarioDto usuario;
+			if (proc.getAtendente() != null)
+				usuario = new UsuarioDto(proc.getAtendente().getId(), proc.getAtendente().getNome(),
+						proc.getAtendente().getEmail(), proc.getAtendente().getPerfil().getRole(),
+						proc.getAtendente().isAtivo());
+			else
+				usuario = null;
 			dtos.add(new ProcessoDto(proc.getId(), proc.getAutos(), proc.getData(),
 					transformaConsDtos(proc.getConsumidores()),
 					transformaConsDtos(proc.getRepresentantes()),
-					transformaFornDtos(proc.getFornecedores()), proc.getSituacao(),
-					new UsuarioDto(proc.getAtendente().getId(), proc.getAtendente().getNome(),
-							proc.getAtendente().getEmail(),
-							proc.getAtendente().getPerfil().getRole(),
-							proc.getAtendente().isAtivo()),
+					transformaFornDtos(proc.getFornecedores()), proc.getSituacao(), usuario,
 					getNroAutos(proc.getAutos())));
 		});
+		Collections.sort(dtos);
 		return new PageImpl<>(dtos, page.getPageable(), page.getTotalElements());
 	}
 
