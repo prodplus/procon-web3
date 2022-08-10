@@ -34,13 +34,18 @@
     </thead>
     <tbody>
       <tr *ngFor="let proc of page.content">
-        <td class="text-center align-middle">{{ proc.autos }}</td>
-        <td class="align-middle">
+        <td class="text-center align-middle" style="cursor: pointer;"
+            [routerLink]="['novo', proc.id]">
+          {{ proc.autos }}
+        </td>
+        <td class="align-middle" style="cursor: pointer;"
+            [routerLink]="['novo', proc.id]">
           <div *ngFor="let cons of proc.consumidores">
             {{ cons.denominacao }}
           </div>
         </td>
-        <td class="align-middle">
+        <td class="align-middle" style="cursor: pointer;"
+            [routerLink]="['novo', proc.id]">
           <div *ngFor="let forn of proc.fornecedores">
             {{ getExibNomeForn(forn) }}
           </div>

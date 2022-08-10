@@ -453,7 +453,7 @@ public class ProcessoService {
 	}
 
 	private static ProcessoDto toProcessoDto(Processo proc) {
-		return new ProcessoDto(proc.getId(), proc.getAutos(), proc.getData(),
+		return new ProcessoDto(proc.getId(), proc.getAutos(), proc.getTipo(), proc.getData(),
 				transformaConsDtos(proc.getConsumidores()),
 				transformaConsDtos(proc.getRepresentantes()),
 				transformaFornDtos(proc.getFornecedores()), proc.getSituacao(),

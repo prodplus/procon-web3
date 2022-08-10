@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import br.com.procon.models.enums.Situacao;
+import br.com.procon.models.enums.TipoProcesso;
 import br.com.procon.utils.AutosUtils;
 
 /**
@@ -11,7 +12,7 @@ import br.com.procon.utils.AutosUtils;
  * @author Marlon F. Garcia
  *
  */
-public record ProcessoDto(Integer id, String autos, LocalDate data,
+public record ProcessoDto(Integer id, String autos, TipoProcesso tipo, LocalDate data,
 		List<ConsumidorDto> consumidores, List<ConsumidorDto> representantes,
 		List<FornecedorDto> fornecedores, Situacao situacao, UsuarioDto atendente, int ordem)
 		implements Comparable<ProcessoDto> {

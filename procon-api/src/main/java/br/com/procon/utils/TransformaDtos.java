@@ -93,9 +93,10 @@ public class TransformaDtos {
 	 */
 	public static List<ProcessoDto> transformaProcDtos(List<Processo> processos) {
 		List<ProcessoDto> lista = new ArrayList<>();
-		processos.forEach(p -> lista.add(new ProcessoDto(p.getId(), p.getAutos(), p.getData(),
-				transformaConsDtos(p.getConsumidores()), transformaConsDtos(p.getRepresentantes()),
-				transformaFornDtos(p.getFornecedores()), p.getSituacao(),
+		processos.forEach(p -> lista.add(new ProcessoDto(p.getId(), p.getAutos(), p.getTipo(),
+				p.getData(), transformaConsDtos(p.getConsumidores()),
+				transformaConsDtos(p.getRepresentantes()), transformaFornDtos(p.getFornecedores()),
+				p.getSituacao(),
 				new UsuarioDto(p.getAtendente().getId(), p.getAtendente().getNome(),
 						p.getAtendente().getEmail(), p.getAtendente().getPerfil().getRole(),
 						p.getAtendente().isAtivo()),
@@ -113,7 +114,7 @@ public class TransformaDtos {
 						proc.getAtendente().isAtivo());
 			else
 				usuario = null;
-			dtos.add(new ProcessoDto(proc.getId(), proc.getAutos(), proc.getData(),
+			dtos.add(new ProcessoDto(proc.getId(), proc.getAutos(), proc.getTipo(), proc.getData(),
 					transformaConsDtos(proc.getConsumidores()),
 					transformaConsDtos(proc.getRepresentantes()),
 					transformaFornDtos(proc.getFornecedores()), proc.getSituacao(), usuario,

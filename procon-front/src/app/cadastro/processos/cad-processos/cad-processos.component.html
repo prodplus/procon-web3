@@ -1,1 +1,116 @@
-<p>cad-processos works!</p>
+<app-pagina [isLoading]="isLoading" *ngIf="!editandoCons && !editandoRepr && !editandoForn">
+  <app-titulo texto="Cadastro de Processos"></app-titulo>
+  <div class="text-center mb-4">
+    <app-botao-cancelar (clique)="cancelar()">
+    </app-botao-cancelar>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="salvar()">
+    <div class="row col-12 mb-4">
+      <div class="col-2">
+        <label for="inputData" class="form-label">Data:</label>
+        <input type="date" id="inputData" [ngClass]="getInputClass('data')" #input
+            formControlName="data" style="text-align: center;" autofocus>
+        <div class="invalid-feedback">
+          obrigatório!
+        </div>
+      </div>
+      <div class="col-2">
+        <label for="inputAutos" class="form-label">Autos:</label>
+        <input type="text" id="inputAutos" class="form-control" style="text-align: end;"
+            placeholder="gerado automat." mask="000/0000" formControlName="autos">
+      </div>
+      <div class="col-3">
+        <label for="inputTipo" class="form-label">Tipo:</label>
+        <select id="inputTipo" class="form-select" formControlName="tipo">
+          <option *ngFor="let tipo of tipos" [value]="tipo">
+            {{ tipo }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Consumidores -->
+    <div #scrollCons></div>
+    <div class="card mb-3 border border-2">
+      <div class="card-header">
+        <div class="card-title">Consumidor(es)</div>
+      </div>
+      <div class="card-body">
+        <app-selec-cons *ngIf="selecionandoCons; else consumidores;"
+            (selecao)="consumidorSelecionado($event)" (novo)="novoConsumidor($event)">
+        </app-selec-cons>
+        <ng-template #consumidores>
+          <app-tab-consumidores [consumidores]="processo.consumidores"
+              [selecionando]="selecionandoCons" (selecionar)="selecionandoCEvent($event)">
+          </app-tab-consumidores>
+        </ng-template>
+      </div>
+    </div>
+
+    <!-- Representantes -->
+    <div #scrollRepr></div>
+    <div class="card mb-3 border border-2">
+      <div class="card-header">
+        <div class="card-title">Representantes(es)</div>
+      </div>
+      <div class="card-body">
+        <app-selec-cons *ngIf="selecionandoRepr; else representantes;"
+            (selecao)="consumidorSelecionado($event)" (novo)="novoConsumidor($event)">
+        </app-selec-cons>
+        <ng-template #representantes>
+          <app-tab-consumidores [consumidores]="processo.representantes"
+              [selecionando]="selecionandoRepr" (selecionar)="selecionandoREvent($event)">
+          </app-tab-consumidores>
+        </ng-template>
+      </div>
+    </div>
+
+    <!-- Fornecedores -->
+    <div #scrollForn></div>
+    <div class="card mb-3 border border-2">
+      <div class="card-header">
+        <div class="card-title">Fornecedor(es)</div>
+      </div>
+      <div class="card-body">
+        <app-selec-forn *ngIf="selecionandoForn; else fornecedores;"
+            (selecao)="fornecedorSelecionado($event)" (novo)="novoFornecedor($event)">
+        </app-selec-forn>
+        <ng-template #fornecedores>
+          <app-tab-fornecedores [fornecedores]="processo.fornecedores"
+              [selecionado]="selecionandoForn" (selecionar)="selecionandoFEvent($event)">
+          </app-tab-fornecedores>
+        </ng-template>
+      </div>
+    </div>
+
+    <!-- Editor -->
+    <div class="card mb-3 border border-2">
+      <div class="card-header">
+        <div class="card-title">Relato</div>
+      </div>
+      <div class="card-body">
+        <textarea id="inputRelato" cols="30" rows="15"
+          class="form-control border-2" formControlName="relato">
+        </textarea>
+      </div>
+    </div>
+
+    <div class="d-grid gap-1">
+      <button type="submit" class="btn btn-success btn-lg"
+          [disabled]="form.invalid || processo.consumidores.length == 0 || processo.fornecedores.length == 0">
+        salvar
+      </button>
+    </div>
+  </form>
+</app-pagina>
+<app-modal #modal></app-modal>
+<app-cad-consumidores [idExterno]="idConsumidor" *ngIf="editandoCons"
+    (salvo)="consumidorSalvo($event)">
+</app-cad-consumidores>
+<app-cad-consumidores [idExterno]="idRepresentante" *ngIf="editandoRepr"
+    (salvo)="representanteSalvo($event)">
+</app-cad-consumidores>
+<app-cad-fornecedores [idExterno]="idFornecedor" *ngIf="editandoForn"
+    (salvo)="fornecedorSalvo($event)">
+</app-cad-fornecedores>

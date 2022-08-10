@@ -5,6 +5,7 @@ import { UsuarioDto } from "./usuario-dto";
 export interface ProcessoDto {
   id: number;
   autos: string;
+  tipo: string;
   data: string;
   consumidores: ConsumidorDto[];
   representantes: ConsumidorDto[];

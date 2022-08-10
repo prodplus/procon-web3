@@ -17,4 +17,8 @@ export class EnumService {
     return this.http.get<string[]>(`${URL}/ufs`);
   }
 
+  getTiposProcesso(): Observable<string[]> {
+    return this.http.get<string[]>(`${URL}/tipos_processo`);
+  }
+
 }
