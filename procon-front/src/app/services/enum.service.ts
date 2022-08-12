@@ -21,4 +21,8 @@ export class EnumService {
     return this.http.get<string[]>(`${URL}/tipos_processo`);
   }
 
+  getSituacoes(): Observable<string[]> {
+    return this.http.get<string[]>(`${URL}/situacoes`);
+  }
+
 }

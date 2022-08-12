@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { faMinus } from '@fortawesome/free-solid-svg-icons';
 import { ModalComponent } from 'src/app/components/modal/modal.component';
+import { Movimento } from 'src/app/models/auxiliares/movimento';
 import { Consumidor } from 'src/app/models/consumidor';
 import { ConsumidorDto } from 'src/app/models/dtos/consumidor-dto';
 import { FornecedorDto } from 'src/app/models/dtos/fornecedor-dto';
@@ -23,6 +24,7 @@ import { getInputClass } from 'src/app/utils/validation';
 })
 export class CadProcessosComponent implements OnInit, AfterViewInit {
   isLoading = false;
+  lancandoMov = false;
   selecionandoCons = false;
   selecionandoRepr = false;
   selecionandoForn = false;
@@ -34,6 +36,7 @@ export class CadProcessosComponent implements OnInit, AfterViewInit {
   idFornecedor: number | null = null;
   idProcesso: number | null = null;
   processo!: ProcessoDto;
+  movimentacao: Movimento[] = [];
   tipos: string[] = [];
   form!: FormGroup;
   iMinus = faMinus;
@@ -113,7 +116,16 @@ export class CadProcessosComponent implements OnInit, AfterViewInit {
         this.isLoading = false;
         this.modal.openErro(err);
       },
-      complete: () => this.isLoading = false,
+      complete: () => {
+        this.processoService.getMovimentacao(proc.id).subscribe({
+          next: (m) => (this.movimentacao = m),
+          error: (err) => {
+            this.isLoading = false;
+            this.modal.openErro(err);
+          },
+          complete: () => this.isLoading = false,
+        });
+      },
     });
   }
 
@@ -150,8 +162,18 @@ export class CadProcessosComponent implements OnInit, AfterViewInit {
           this.modal.openErro(err);
         },
         complete: () => {
-          this.isLoading = false;
-          this.router.navigate(['/cadastros/processos']);
+          if (this.movimentacao.length) {
+            this.processoService.setMovimentacao(this.processo.id, this.movimentacao).
+            subscribe({
+              complete: () => {
+                this.isLoading = false;
+                this.router.navigate(['/cadastros/processos']);
+              }
+            });
+          } else {
+            this.isLoading = false;
+            this.router.navigate(['/cadastros/processos']);
+          }
         }
       });
     } else if (this.idProcesso != null) {
@@ -163,8 +185,18 @@ export class CadProcessosComponent implements OnInit, AfterViewInit {
             this.modal.openErro(err);
           },
           complete: () => {
-            this.isLoading = false;
-            this.router.navigate(['/cadastros/processos']);
+            if (this.movimentacao.length) {
+              this.processoService.setMovimentacao(this.processo.id, this.movimentacao).
+              subscribe({
+                complete: () => {
+                  this.isLoading = false;
+                  this.router.navigate(['/cadastros/processos']);
+                }
+              });
+            } else {
+              this.isLoading = false;
+              this.router.navigate(['/cadastros/processos']);
+            }
           }
       });
     }
@@ -332,6 +364,11 @@ export class CadProcessosComponent implements OnInit, AfterViewInit {
 
   getInputClass(field: string): string {
     return getInputClass(field, this.form);
+  }
+
+  registrarMov(mov: Movimento | null) {
+    if (mov != null) this.movimentacao.unshift(mov);
+    this.lancandoMov = false;
   }
 
 }

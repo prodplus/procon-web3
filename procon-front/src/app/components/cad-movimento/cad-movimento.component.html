@@ -1,0 +1,58 @@
+<form [formGroup]="form" (ngSubmit)="salvar()">
+  <div class="col-3 mb-3">
+    <label for="inputDataM" class="form-label">Data:</label>
+    <input type="date" id="inputDataM" class="form-control" formControlName="data"
+        #input>
+    <div class="invalid-feedback">
+      obrigatório!
+    </div>
+  </div>
+  <div class="row col-12 mb-3">
+    <div class="col-4">
+      <label for="selectDe" class="form-label">De:</label>
+      <select id="selectDe" class="form-select" formControlName="de">
+        <option *ngFor="let sit of situacoes" [value]="sit">
+          {{ sit }}
+        </option>
+      </select>
+      <div class="invalid-feedback">
+        obrigatório!
+      </div>
+    </div>
+    <div class="col-4">
+      <label for="selectPara" class="form-label">Para:</label>
+      <select id="selectPara" class="form-select" formControlName="para">
+        <option *ngFor="let sit of situacoes" [value]="sit">
+          {{ sit }}
+        </option>
+      </select>
+      <div class="invalid-feedback">
+        obrigatório!
+      </div>
+    </div>
+  </div>
+  <div class="col-8 mb-3">
+    <label for="inputAverb" class="form-label">Averbação:</label>
+    <input type="text" id="inputAverb" class="form-control" formControlName="averbacao">
+  </div>
+  <div class="row col-12 mb-3">
+    <div class="col-3">
+      <label for="inputAuxD" class="form-label">Data aux:</label>
+      <input type="date" id="inputAuxD" class="form-control" formControlName="auxD"
+          style="text-align: center;">
+    </div>
+    <div class="col-3">
+      <label for="inputAuxT" class="form-label">Hora aux:</label>
+      <input type="time" id="inputAuxT" class="form-control" formControlName="auxT"
+          style="text-align: center;">
+    </div>
+  </div>
+  <div class="text-center">
+    <button class="btn btn-success me-1" [disabled]="form.invalid" type="submit">
+      salvar
+    </button>
+    <button class="btn btn-danger me-1" (click)="cancelar()" type="button">
+      cancelar
+    </button>
+  </div>
+</form>

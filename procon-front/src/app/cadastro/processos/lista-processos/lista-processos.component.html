@@ -33,7 +33,8 @@
       <th class="text-center th-botao">exc</th>
     </thead>
     <tbody>
-      <tr *ngFor="let proc of page.content">
+      <tr *ngFor="let proc of page.content" [ngClass]="getRowClass(proc)"
+          [title]="proc.situacao">
         <td class="text-center align-middle" style="cursor: pointer;"
             [routerLink]="['novo', proc.id]">
           {{ proc.autos }}

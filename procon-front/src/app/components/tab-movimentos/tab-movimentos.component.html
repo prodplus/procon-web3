@@ -1,0 +1,38 @@
+<table class="table table-sm table-bordered table-striped table-danger">
+  <caption *ngIf="movimentacao.length == 0">
+    Processo não movimentado. Caso esteja cadastrando um novo processo, deixe que o sistema ajuste a movimentação automaticamente.
+  </caption>
+  <thead class="bg-danger text-white">
+    <th class="text-center">Data</th>
+    <th class="text-center">De</th>
+    <th class="text-center">Para</th>
+    <th class="text-center">Aux</th>
+    <th class="text-center">Averb</th>
+    <th class="text-center th-botao">rem</th>
+  </thead>
+  <tbody>
+    <tr *ngFor="let mov of movimentacao; index as i;">
+      <td class="text-center align-middle">
+        {{ mov.data | date: 'dd/MM/yyyy' }}
+      </td>
+      <td class="text-center align-middle">
+        {{ mov.de }}
+      </td>
+      <td class="text-center align-middle">
+        {{ mov.para }}
+      </td>
+      <td class="text-center align-middle">
+        {{ mov.auxD | date: 'dd/MM' }} {{ mov.auxT }}
+      </td>
+      <td class="text-center align-middle">
+        {{ mov.averbacao }}
+      </td>
+      <td class="text-center align-middle">
+        <button class="btn btn-sm btn-danger" type="button"
+            (click)="removerMov(i)">
+          <fa-icon [icon]="iMinus"></fa-icon>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>

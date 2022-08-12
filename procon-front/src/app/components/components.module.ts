@@ -30,6 +30,8 @@ import { SelecConsComponent } from './selec-cons/selec-cons.component';
 import { SelecFornComponent } from './selec-forn/selec-forn.component';
 import { TabConsumidoresComponent } from './tab-consumidores/tab-consumidores.component';
 import { TabFornecedoresComponent } from './tab-fornecedores/tab-fornecedores.component';
+import { CadMovimentoComponent } from './cad-movimento/cad-movimento.component';
+import { TabMovimentosComponent } from './tab-movimentos/tab-movimentos.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +56,9 @@ import { TabFornecedoresComponent } from './tab-fornecedores/tab-fornecedores.co
     SelecConsComponent,
     SelecFornComponent,
     TabConsumidoresComponent,
-    TabFornecedoresComponent
+    TabFornecedoresComponent,
+    CadMovimentoComponent,
+    TabMovimentosComponent
   ],
   imports: [
     CommonModule,
@@ -86,7 +90,9 @@ import { TabFornecedoresComponent } from './tab-fornecedores/tab-fornecedores.co
     SelecConsComponent,
     SelecFornComponent,
     TabConsumidoresComponent,
-    TabFornecedoresComponent
+    TabFornecedoresComponent,
+    CadMovimentoComponent,
+    TabMovimentosComponent
   ]
 })
 export class ComponentsModule { }

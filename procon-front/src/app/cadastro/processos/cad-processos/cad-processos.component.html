@@ -96,6 +96,27 @@
       </div>
     </div>
 
+    <!-- Movimentação -->
+    <div class="card mb-3 border border-2">
+      <div class="card-header">
+        <div class="card-title">Movimentação</div>
+      </div>
+      <div class="card-body">
+        <app-cad-movimento *ngIf="lancandoMov; else movimentos;"
+            (cadMovimento)="registrarMov($event)">
+        </app-cad-movimento>
+        <ng-template #movimentos>
+          <div class="text-center mb-2">
+            <button class="btn btn-primary" type="button" (click)="lancandoMov = true">
+              movimentar
+            </button>
+          </div>
+          <app-tab-movimentos [movimentacao]="movimentacao">
+          </app-tab-movimentos>
+        </ng-template>
+      </div>
+    </div>
+
     <div class="d-grid gap-1">
       <button type="submit" class="btn btn-success btn-lg"
           [disabled]="form.invalid || processo.consumidores.length == 0 || processo.fornecedores.length == 0">
